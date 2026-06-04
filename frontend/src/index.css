@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-on-surface font-inter;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  /* Global focus-visible outline for keyboard accessibility */
+  :focus-visible {
+    outline: 2px solid #00546c;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+@layer components {
+  .teal-shadow {
+    box-shadow: 0px 4px 12px rgba(0, 110, 140, 0.08);
+  }
+
+  .teal-shadow-hover:hover {
+    box-shadow: 0px 8px 20px rgba(0, 110, 140, 0.12);
+  }
+
+  .tutor-card-shadow {
+    box-shadow: 0px 4px 12px rgba(0, 110, 140, 0.08);
+  }
+
+  .tutor-card-shadow:hover {
+    box-shadow: 0px 8px 20px rgba(0, 110, 140, 0.12);
+  }
+
+  .form-card {
+    box-shadow: 0px 4px 12px rgba(0, 110, 140, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  .form-card:hover {
+    box-shadow: 0px 8px 20px rgba(0, 110, 140, 0.12);
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+    font-family: 'Material Symbols Outlined';
+    font-style: normal;
+    font-weight: normal;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+  }
+
+  .btn-primary {
+    @apply bg-secondary text-white font-bold px-md py-sm rounded-lg shadow-sm hover:opacity-90 active:scale-95 transition-all duration-200;
+  }
+
+  .btn-secondary {
+    @apply border-2 border-primary text-primary font-bold px-md py-sm rounded-lg hover:bg-primary hover:text-white active:scale-95 transition-all duration-200;
+  }
+
+  .btn-ghost {
+    @apply text-primary font-bold px-md py-sm rounded-lg hover:bg-surface-container active:scale-95 transition-all duration-200;
+  }
+
+  .card {
+    @apply bg-white rounded-xl teal-shadow border border-outline-variant;
+  }
+
+  .section-container {
+    @apply max-w-container-max mx-auto px-4 md:px-8 lg:px-12;
+  }
+
+  .section-tag {
+    @apply inline-block font-montserrat text-label-md font-semibold tracking-widest px-sm py-xs rounded-full uppercase;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #00546c, #f05a28);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-gradient {
+    background: linear-gradient(135deg, rgba(188,233,255,0.3) 0%, rgba(255,255,255,0) 60%);
+  }
+
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .page-transition {
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .float-animation {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-surface-container-low;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary-container;
+  }
+  /* No-scrollbar utility for horizontal scroll containers */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
