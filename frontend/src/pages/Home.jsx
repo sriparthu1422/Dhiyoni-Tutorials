@@ -187,7 +187,7 @@ export default function Home() {
               <div className="aspect-video overflow-hidden">
                 <img
                   alt="Secondary Education"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover object-[center_70%] group-hover:scale-110 transition-transform duration-500"
                   loading="lazy"
                   src={grade6to12Img}
                 />
