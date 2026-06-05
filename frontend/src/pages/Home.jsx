@@ -267,9 +267,65 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            
+            {/* Language Excellence Card — spans 2 columns on lg */}
+            <div className="group relative overflow-hidden rounded-2xl border border-outline-variant teal-shadow flex flex-col">
+              <div className="aspect-video overflow-hidden">
+                <img
+                  alt="IIT NEET Coaching"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyPwlUKv8Gtk9w0IC_lDJ1t9JK7DtWt2Nm60znFDW_1AwdxQl289BIdazYuol2LUXpVyfc12-TWdv4NehVGUQriMKB6uGkfPdnxIYpXy10hwSyML69mEo42XvuKCMDVIHGD5WwOxxRqGOaPIJPcE2tNFt1jH47g69xZL9CkEAki7CxmBVORofsfW9ePEnsaMka7xrr_iDor0Y9JSWxYYVrk799OBoeXn4ujjPTIy0KBA3R1WpbFDbR-I-eSVfN30WsClMn9rLCzP8t"
+                />
+              </div>
+              <div className="p-md flex flex-col flex-grow">
+                <span className="bg-secondary-fixed text-secondary px-sm py-xs rounded font-montserrat text-label-md mb-base inline-block self-start">
+                  LINGUISTIC
+                </span>
+                <h3 className="font-montserrat font-semibold text-headline-md text-primary mb-sm">Language Excellence</h3>
+                <p className="font-inter text-on-surface-variant text-body-md mb-md">
+                  Comprehensive programs in English, French, Hindi, and Telugu. 
+                </p>
+                <div className="mt-auto">
+                  <Link
+                    to="/courses?filter=coaching"
+                    className="w-full flex items-center justify-center gap-sm bg-secondary text-white font-bold py-sm px-md rounded-lg shadow-sm hover:bg-secondary/90 transition-all group/btn"
+                  >
+                    <span>View More</span>
+                    <span className="material-symbols-outlined text-[20px] transition-transform group-hover/btn:translate-x-1">arrow_forward</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
 
             {/* Language Excellence Card — spans 2 columns on lg */}
-            <div className="lg:col-span-2 group relative overflow-hidden rounded-2xl border border-outline-variant teal-shadow flex flex-col p-md bg-white">
+            <div className="group relative overflow-hidden rounded-2xl border border-outline-variant teal-shadow flex flex-col">
+              <div className="aspect-video overflow-hidden">
+                <img
+                  alt="IIT NEET Coaching"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyPwlUKv8Gtk9w0IC_lDJ1t9JK7DtWt2Nm60znFDW_1AwdxQl289BIdazYuol2LUXpVyfc12-TWdv4NehVGUQriMKB6uGkfPdnxIYpXy10hwSyML69mEo42XvuKCMDVIHGD5WwOxxRqGOaPIJPcE2tNFt1jH47g69xZL9CkEAki7CxmBVORofsfW9ePEnsaMka7xrr_iDor0Y9JSWxYYVrk799OBoeXn4ujjPTIy0KBA3R1WpbFDbR-I-eSVfN30WsClMn9rLCzP8t"
+                />
+              </div>
+              <div className="p-md flex flex-col flex-grow">
+                <span className="bg-secondary-fixed text-secondary px-sm py-xs rounded font-montserrat text-label-md mb-base inline-block self-start">
+                  EXTRACURRICULAR
+                </span>
+                <h3 className="font-montserrat font-semibold text-headline-md text-primary mb-sm">Extracurriculars</h3>
+                <p className="font-inter text-on-surface-variant text-body-md mb-md">
+                  Encouraging creativity, leadership, and overall development beyond academics.  
+                </p>
+                <div className="mt-auto">
+                  <Link
+                    to="/courses?filter=coaching"
+                    className="w-full flex items-center justify-center gap-sm bg-secondary text-white font-bold py-sm px-md rounded-lg shadow-sm hover:bg-secondary/90 transition-all group/btn"
+                  >
+                    <span>View More</span>
+                    <span className="material-symbols-outlined text-[20px] transition-transform group-hover/btn:translate-x-1">arrow_forward</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            {/* <div className="lg:col-span-2 group relative overflow-hidden rounded-2xl border border-outline-variant teal-shadow flex flex-col p-md bg-white">
               <div className="mb-md">
                 <span className="bg-primary-fixed text-primary px-sm py-xs rounded font-montserrat text-label-md mb-base inline-block">
                   LINGUISTIC
@@ -306,7 +362,7 @@ export default function Home() {
                   <span className="material-symbols-outlined text-[20px] transition-transform group-hover/btn:translate-x-1">arrow_forward</span>
                 </Link>
               </div>
-            </div>
+            </div> */}
 
           </div>
         </div>

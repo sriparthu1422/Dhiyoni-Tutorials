@@ -1,23 +1,23 @@
 import { useEffect, useState, useRef } from 'react'
 import logo from '../assets/logo.png'
-import map from '../assets/map.png'
+import map from '../assets/map.png' 
 
 const faqs = [
   {
-    q: 'What are the trial class timings?',
-    a: 'Trial classes are scheduled between 4 PM and 7 PM on weekdays, allowing students to experience our teaching methodology after school hours.',
+    q: 'How do you select tutors for students? ',
+    a: "We carefully match tutors based on the student's grade level, board curriculum, learning style, and academic goals to ensure the best learning experience." 
   },
   {
-    q: 'Do you provide career counseling?',
-    a: 'Yes, we provide dedicated career counseling sessions for 10th and 12th-grade students to help them choose the right academic stream and future path.',
+    q: 'Do you provide one-on-one tutoring sessions?',
+    a: "Yes, students who require personalized attention can opt for one-on-one sessions tailored to their academic needs and learning goals.",
   },
   {
-    q: 'Are classes online or offline?',
-    a: 'We offer a hybrid learning model. Students can choose between in-person classroom sessions at our hub or live interactive online sessions.',
+    q: "Can parents track their child's academic progress?",
+    a: "Yes, Parents receive regular progress report test results and feedback from tutors to stay informed about their child's performance.",
   },
   {
-    q: 'What is the teacher-student ratio?',
-    a: 'To ensure personalized attention, we maintain a strict 1:15 ratio for classroom sessions and 1:8 for specialized board prep batches.',
+    q: 'Do you help students with homework and school assignment?',
+    a: "Yes, Our tutors assist students with homework projects, assignments, and exam preparation while encouraging independent learning and problem-solving skills.",
   },
 ]
 
@@ -188,7 +188,7 @@ export default function Contact() {
                 <span className="material-symbols-outlined text-primary">location_on</span>
                 <div>
                   <h4 className="font-inter text-body-md font-bold text-primary">Office Address</h4>
-                  <p className="font-inter text-body-sm text-on-surface-variant">
+                  <p className="font-inter text-body-xs text-on-surface-variant">
                     Flat no: 204, 3rd floor, Sigma Sarovar, Bandam kommu, Ameenpur Road, 502032
                   </p>
                 </div>
@@ -199,7 +199,7 @@ export default function Contact() {
                   <h4 className="font-inter text-body-md font-bold text-primary">Phone Number</h4>
                   <a
                     href="tel:+917901034846"
-                    className="font-inter text-body-sm text-on-surface-variant hover:text-secondary transition-colors"
+                    className="font-inter text-body-xs text-on-surface-variant hover:text-secondary transition-colors"
                   >
                     +91 79010 34846
                   </a>
@@ -211,10 +211,11 @@ export default function Contact() {
                   <h4 className="font-inter text-body-md font-bold text-primary">Official Email</h4>
                   <a
                     href="mailto:dhiyonitutorials@gmail.com"
-                    className="font-inter text-body-sm text-on-surface-variant hover:text-secondary transition-colors"
+                    className="font-inter text-body-xs text-on-surface-variant hover:text-secondary transition-colors"
                   >
                     dhiyonitutorials@gmail.com
                   </a>
+                  <p className='text-sm text-black italic mt-2'>(We typically reply within 24 hours.)</p>
                 </div>
               </div>
             </div>
@@ -239,7 +240,7 @@ export default function Contact() {
             </a>
 
             {/* Trust Badge */}
-            <div className="flex items-center justify-center p-md bg-white rounded-xl border border-outline-variant teal-shadow">
+            {/* <div className="flex items-center justify-center p-md bg-white rounded-xl border border-outline-variant teal-shadow">
               <div className="flex items-center gap-sm">
                 <div className="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center">
                   <span
@@ -254,13 +255,13 @@ export default function Contact() {
                   <p className="font-inter text-body-sm font-bold text-primary">Educational Excellence Partner</p>
                 </div>
               </div>
-            </div>
+            </div> */}
 
           </div>
         </div>
 
         {/* ── FAQ SECTION ──────────────────────────────────────── */}
-        <section className="mt-xl py-xl border-t border-outline-variant px-2 md:px-0">
+        <section className="mt-[50px] py-xl border-t border-outline-variant px-2 md:px-0">
           <h2 className="font-montserrat font-semibold text-headline-lg text-primary text-center mb-xl">
             Common Questions
           </h2>
