@@ -32,13 +32,10 @@ export const createParentSignup = async (req, res) => {
       referral
     });
 
-    // Attempt to forward details via email to dhiyonitutorials.info@gmail.com
-    try {
-      await sendParentSignupEmail(signup);
-    } catch (emailError) {
-      console.error('⚠️ SMTP Failure: Failed to forward parent signup email:', emailError.message);
-      // We do not fail the request on SMTP errors, as details are safely saved in MongoDB
-    }
+    // Forward details via email in the background so we don't block the client response
+    sendParentSignupEmail(signup).catch((emailError) => {
+      console.error('⚠️ SMTP Failure: Failed to forward parent signup email in background:', emailError.message);
+    });
 
     res.status(201).json(signup);
   } catch (error) {

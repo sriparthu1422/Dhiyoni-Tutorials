@@ -40,13 +40,10 @@ export const createTutorSignup = async (req, res) => {
       hasTech: hasTech === true || hasTech === 'true'
     });
 
-    // Attempt to forward details via email to dhiyonitutorials.info@gmail.com
-    try {
-      await sendTutorApplicationEmail(signup);
-    } catch (emailError) {
-      console.error('⚠️ SMTP Failure: Failed to forward application email:', emailError.message);
-      // We do not fail the request on SMTP errors, as details are safely saved in MongoDB
-    }
+    // Forward details via email in the background so we don't block the client response
+    sendTutorApplicationEmail(signup).catch((emailError) => {
+      console.error('⚠️ SMTP Failure: Failed to forward application email in background:', emailError.message);
+    });
 
     res.status(201).json(signup);
   } catch (error) {
