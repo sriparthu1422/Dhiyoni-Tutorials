@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dns from 'dns';
+import mongoose from 'mongoose';
 
 // Force Node to resolve DNS via IPv4 first to prevent Atlas SRV errors
 dns.setDefaultResultOrder('ipv4first');
@@ -71,6 +72,27 @@ app.use('/api/parent-signups', strictLimiter);
 app.use('/api/tutor-signups', strictLimiter);
 app.use('/api/contacts', strictLimiter);
 app.use('/api/newsletters', strictLimiter);
+
+// Diagnostic Health Check
+app.get('/api/health', (req, res) => {
+  let dbStatus = 'disconnected';
+  const readyState = mongoose.connection.readyState;
+  if (readyState === 0) dbStatus = 'disconnected';
+  else if (readyState === 1) dbStatus = 'connected';
+  else if (readyState === 2) dbStatus = 'connecting';
+  else if (readyState === 3) dbStatus = 'disconnecting';
+
+  res.json({
+    status: 'UP',
+    database: dbStatus,
+    env: {
+      nodeEnv: process.env.NODE_ENV,
+      hasMongoUri: !!process.env.MONGODB_URI,
+      hasEmailUser: !!process.env.EMAIL_USER,
+      hasEmailPass: !!process.env.EMAIL_PASS,
+    }
+  });
+});
 
 // API Routes
 app.use('/api/auth', authRoutes);
