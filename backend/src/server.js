@@ -31,11 +31,7 @@ const __dirname = path.dirname(__filename);
 // Load environment variables
 dotenv.config();
 
-// Connect to Database
-connectDB().then(() => {
-  // Seed initial data
-  seedData();
-});
+// Database connection will be awaited per-request in the middleware below
 
 const app = express();
 
@@ -74,7 +70,14 @@ app.use('/api/contacts', strictLimiter);
 app.use('/api/newsletters', strictLimiter);
 
 // Diagnostic Health Check
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
+  // Ensure we try to connect if not already connected
+  try {
+    await connectDB();
+  } catch (err) {
+    // ignore here, handled in middleware mostly, but good for healthcheck
+  }
+
   let dbStatus = 'disconnected';
   const readyState = mongoose.connection.readyState;
   if (readyState === 0) dbStatus = 'disconnected';
@@ -92,6 +95,19 @@ app.get('/api/health', (req, res) => {
       hasEmailPass: !!process.env.EMAIL_PASS,
     }
   });
+});
+
+// -------------------------------------------------------------
+// DATABASE CONNECTION MIDDLEWARE (REQUIRED FOR SERVERLESS)
+// -------------------------------------------------------------
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error('Failed to connect to database in middleware:', error);
+    res.status(500).json({ message: 'Database connection failed. Please try again.' });
+  }
 });
 
 // API Routes
