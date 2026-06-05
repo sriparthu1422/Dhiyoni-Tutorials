@@ -464,8 +464,8 @@ export default function Courses() {
               </div>
             </div>
 
-            {/* Right Image */}
-            <div className="w-full lg:w-[75%] lg:absolute lg:right-[-140px] lg:bottom-0 lg:h-full flex justify-center lg:justify-end items-end pt-4 lg:pt-0 relative">
+            {/* Right Image (Hidden on Mobile/Tab) */}
+            <div className="hidden lg:flex w-full lg:w-[75%] lg:absolute lg:right-[-140px] lg:bottom-0 lg:h-full justify-end items-end pt-0 relative">
               {/* Vector Sketches behind the student */}
               <div className="absolute inset-0 -z-10 hidden lg:block overflow-hidden pointer-events-none">
                 {/* Light bulb */}
