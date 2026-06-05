@@ -4,15 +4,22 @@ import Tutor from '../models/Tutor.js';
 const seedData = async () => {
   try {
     // 1. Seed Admin User
-    const adminExists = await User.findOne({ email: 'admin@dhiyoni.com' });
-    if (!adminExists) {
-      await User.create({
-        username: 'DHIYONI Admin',
-        email: 'admin@dhiyoni.com',
-        password: 'DhiyoniAdmin2026!', // Will be automatically hashed in pre-save hook
-        role: 'admin'
-      });
-      console.log('Admin user seeded successfully!');
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    if (adminEmail && adminPassword) {
+      const adminExists = await User.findOne({ email: adminEmail });
+      if (!adminExists) {
+        await User.create({
+          username: 'DHIYONI Admin',
+          email: adminEmail,
+          password: adminPassword, // Will be automatically hashed in pre-save hook
+          role: 'admin'
+        });
+        console.log('Admin user seeded successfully!');
+      }
+    } else {
+      console.log('Admin credentials not found in environment variables. Skipping admin seed.');
     }
 
     // 2. Seed Initial Tutors
