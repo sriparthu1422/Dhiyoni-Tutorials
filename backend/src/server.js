@@ -102,19 +102,10 @@ app.use('/api/tutor-signups', tutorSignupRoutes);
 app.use('/api/newsletters', newsletterRoutes);
 app.use('/api/tutors', tutorRoutes);
 
-// Production setup (serve client build)
-const frontendDistPath = path.join(__dirname, '../../frontend/dist');
-if (process.env.NODE_ENV === 'production' || app.get('env') === 'production') {
-  app.use(express.static(frontendDistPath));
-  
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(frontendDistPath, 'index.html'));
-  });
-} else {
-  app.get('/', (req, res) => {
-    res.send('API is running successfully...');
-  });
-}
+// Base route
+app.get('/', (req, res) => {
+  res.json({ message: 'Dhiyoni API is running successfully on Vercel Serverless!' });
+});
 
 // Error Middleware
 app.use(notFound);
