@@ -6,6 +6,7 @@ export const sendTutorApplicationEmail = async (tutorDetails) => {
   const user = process.env.EMAIL_USER;
   const pass = process.env.EMAIL_PASS;
   const from = process.env.EMAIL_FROM || 'dhiyonitutorials.info@gmail.com';
+  const to = process.env.EMAIL_TO || user;
 
   // Local development fallback: Log warning instead of failing the request
   if (!user || !pass) {
@@ -37,7 +38,7 @@ export const sendTutorApplicationEmail = async (tutorDetails) => {
   // 2. Format details into a clean HTML email template matching Dhiyoni aesthetics
   const mailOptions = {
     from: `"DHIYONI Tutorials Web Portal" <${from}>`,
-    to: 'dhiyonitutorials.info@gmail.com',
+    to: to,
     subject: `New Tutor Application Submission: ${tutorDetails.fullName}`,
     html: `
       <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; color: #1a1c1c; border: 1px solid #bfc8cd; border-radius: 16px; overflow: hidden; box-shadow: 0px 4px 12px rgba(0, 110, 140, 0.08);">
@@ -145,6 +146,7 @@ export const sendParentSignupEmail = async (signupDetails) => {
   const user = process.env.EMAIL_USER;
   const pass = process.env.EMAIL_PASS;
   const from = process.env.EMAIL_FROM || 'dhiyonitutorials.info@gmail.com';
+  const to = process.env.EMAIL_TO || user;
 
   if (!user || !pass) {
     console.warn('⚠️ SMTP Email credentials not configured in backend/.env. Email sending skipped.');
@@ -167,7 +169,7 @@ export const sendParentSignupEmail = async (signupDetails) => {
 
   const mailOptions = {
     from: `"DHIYONI Tutorials Web Portal" <${from}>`,
-    to: 'dhiyonitutorials.info@gmail.com',
+    to: to,
     subject: `New Student/Parent Signup Registration: ${signupDetails.studentName}`,
     html: `
       <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; color: #1a1c1c; border: 1px solid #bfc8cd; border-radius: 16px; overflow: hidden; box-shadow: 0px 4px 12px rgba(0, 110, 140, 0.08);">
