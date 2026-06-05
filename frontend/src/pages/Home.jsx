@@ -293,7 +293,7 @@ export default function Home() {
                 </p>
                 <div className="mt-auto">
                   <Link
-                    to="/courses?filter=coaching"
+                    to="/courses?filter=languages"
                     className="w-full flex items-center justify-center gap-sm bg-secondary text-white font-bold py-sm px-md rounded-lg shadow-sm hover:bg-secondary/90 transition-all group/btn"
                   >
                     <span>View More</span>
