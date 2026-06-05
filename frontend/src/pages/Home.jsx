@@ -308,7 +308,7 @@ export default function Home() {
               <div className="aspect-video overflow-hidden">
                 <img
                   alt="Extracurriculars"
-                  className="w-full h-full object-cover object-[center_30%] group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover object-[center_25%] group-hover:scale-110 transition-transform duration-500"
                   src={extraImg}
                 />
               </div>
