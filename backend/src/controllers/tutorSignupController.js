@@ -40,10 +40,13 @@ export const createTutorSignup = async (req, res) => {
       hasTech: hasTech === true || hasTech === 'true'
     });
 
-    // Forward details via email in the background so we don't block the client response
-    sendTutorApplicationEmail(signup).catch((emailError) => {
-      console.error('⚠️ SMTP Failure: Failed to forward application email in background:', emailError.message);
-    });
+    // Forward details via email and AWAIT it so Vercel doesn't kill the background process
+    try {
+      await sendTutorApplicationEmail(signup);
+    } catch (emailError) {
+      console.error('⚠️ SMTP Failure: Failed to forward application email:', emailError.message);
+      // We log the error but still return 201 since the database save was successful
+    }
 
     res.status(201).json(signup);
   } catch (error) {
