@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import grade3to5Img from '../assets/Grades 3-5.png'
+import grade6to12Img from '../assets/Grades 6-12.png'
 
 export default function Home() {
   useEffect(() => {
@@ -188,7 +189,7 @@ export default function Home() {
                   alt="Secondary Education"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   loading="lazy"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDm8Et4J0nid_6alPBN0KbsBaFUYvt_7geL1mFSQOFzjyXwm6jvWIjia4wLzZv9yOetKka-5W_E0iGGZ3-ZUE6oQsYY42I-65mOGnZPcRbW9Cs-4POXpZe1rzgIdxv23AyGo4H0voWE_PKBcZOspS9Znx7hdWZVLzB8hQb9qoA7kCZ_5NpkGabkCvrmx9cf7vZhmCd0BcV5vZxlIDAkEdLRTlF_1AAk9y1wgK4LvvtRToNqKPGSOt4BcT2sfC8S9EHrCWOqspnKaWJc"
+                  src={grade6to12Img}
                 />
               </div>
               <div className="p-md flex flex-col flex-grow">
