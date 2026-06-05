@@ -248,7 +248,7 @@ export default function Home() {
               <div className="aspect-video overflow-hidden">
                 <img
                   alt="IIT NEET Coaching"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover object-[center_70%] group-hover:scale-110 transition-transform duration-500"
                   src={iit2Img}
                 />
               </div>
