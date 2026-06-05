@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import grade3to5Img from '../assets/Grades 3-5.png'
 import grade6to12Img from '../assets/Grades 6-12.png'
+import iit1Img from '../assets/IIT-1.png'
 
 export default function Home() {
   useEffect(() => {
@@ -187,7 +188,7 @@ export default function Home() {
               <div className="aspect-video overflow-hidden">
                 <img
                   alt="Secondary Education"
-                  className="w-full h-full object-cover object-[center_70%] group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover object-[center_80%] group-hover:scale-110 transition-transform duration-500"
                   loading="lazy"
                   src={grade6to12Img}
                 />
@@ -218,7 +219,7 @@ export default function Home() {
                 <img
                   alt="IIT NEET Prep"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyPwlUKv8Gtk9w0IC_lDJ1t9JK7DtWt2Nm60znFDW_1AwdxQl289BIdazYuol2LUXpVyfc12-TWdv4NehVGUQriMKB6uGkfPdnxIYpXy10hwSyML69mEo42XvuKCMDVIHGD5WwOxxRqGOaPIJPcE2tNFt1jH47g69xZL9CkEAki7CxmBVORofsfW9ePEnsaMka7xrr_iDor0Y9JSWxYYVrk799OBoeXn4ujjPTIy0KBA3R1WpbFDbR-I-eSVfN30WsClMn9rLCzP8t"
+                  src={iit1Img}
                 />
               </div>
               <div className="p-md flex flex-col flex-grow">
