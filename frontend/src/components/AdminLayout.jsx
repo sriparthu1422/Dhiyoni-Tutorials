@@ -523,9 +523,17 @@ export default function AdminLayout() {
                             </div>
                           </td>
                           <td className="p-4">
-                            <span className={`px-2.5 py-0.5 rounded-full border text-[11px] font-bold ${getStatusClass(item.status)}`}>
-                              {item.status}
-                            </span>
+                            <select
+                              value={item.status}
+                              onChange={(e) => updateStatus('parent', item._id, e.target.value)}
+                              className={`px-2.5 py-1 rounded-full border text-[11px] font-bold outline-none cursor-pointer appearance-none text-center ${getStatusClass(item.status)}`}
+                              style={{ textAlignLast: 'center' }}
+                            >
+                              <option value="Pending" className="text-amber-800 bg-white">Pending</option>
+                              <option value="Contacted" className="text-blue-800 bg-white">Contacted</option>
+                              <option value="Enrolled" className="text-emerald-800 bg-white">Enrolled</option>
+                              <option value="Rejected" className="text-rose-800 bg-white">Rejected</option>
+                            </select>
                           </td>
                           <td className="p-4 text-right whitespace-nowrap space-x-3">
                             <button
