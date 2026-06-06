@@ -64,13 +64,13 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Apply rate limiters
-app.use('/api', generalLimiter); // General API limiter
-app.post('/api/auth/login', strictLimiter); // Restrict login attempts
-app.post('/api/parent-signups', strictLimiter); // Restrict form submissions
-app.post('/api/tutor-signups', strictLimiter);
-app.post('/api/contacts', strictLimiter);
-app.post('/api/newsletters', strictLimiter);
+// Apply rate limiters (DISABLED per request to eliminate rate limiting errors)
+// app.use('/api', generalLimiter); // General API limiter
+// app.post('/api/auth/login', strictLimiter); // Restrict login attempts
+// app.post('/api/parent-signups', strictLimiter); // Restrict form submissions
+// app.post('/api/tutor-signups', strictLimiter);
+// app.post('/api/contacts', strictLimiter);
+// app.post('/api/newsletters', strictLimiter);
 
 // Diagnostic Health Check
 app.get('/api/health', async (req, res) => {
