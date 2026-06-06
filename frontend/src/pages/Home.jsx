@@ -518,7 +518,7 @@ export default function Home() {
                     value={feedbackData.name}
                     onChange={handleFeedbackChange}
                     className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
-                    placeholder="John Doe"
+                    placeholder="Your Name"
                   />
                 </div>
                 <div>
@@ -545,7 +545,7 @@ export default function Home() {
                     value={feedbackData.email}
                     onChange={handleFeedbackChange}
                     className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
-                    placeholder="john@example.com"
+                    placeholder="you@example.com"
                   />
                 </div>
                 <div>
