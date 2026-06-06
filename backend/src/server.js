@@ -5,7 +5,6 @@ import morgan from 'morgan';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
 import dns from 'dns';
 import mongoose from 'mongoose';
 
@@ -35,25 +34,7 @@ dotenv.config();
 
 const app = express();
 
-// Enable trust proxy so express-rate-limit correctly identifies client IPs behind Vercel load balancers
-app.set('trust proxy', 1);
-
-// Rate Limiting Middlewares
-const generalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per 15 minutes
-  message: { message: 'Too many requests from this IP, please try again after 15 minutes.' },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
-const strictLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 15, // Limit each IP to 15 submissions or logins per 15 minutes
-  message: { message: 'Too many requests or form submissions from this IP, please try again after 15 minutes.' },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+// Removed rate limiters permanently per user request
 
 // Middleware
 app.use(helmet());
@@ -64,13 +45,6 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Apply rate limiters (DISABLED per request to eliminate rate limiting errors)
-// app.use('/api', generalLimiter); // General API limiter
-// app.post('/api/auth/login', strictLimiter); // Restrict login attempts
-// app.post('/api/parent-signups', strictLimiter); // Restrict form submissions
-// app.post('/api/tutor-signups', strictLimiter);
-// app.post('/api/contacts', strictLimiter);
-// app.post('/api/newsletters', strictLimiter);
 
 // Diagnostic Health Check
 app.get('/api/health', async (req, res) => {
