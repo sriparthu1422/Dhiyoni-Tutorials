@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export default function AdminLayout() {
-  const [activeTab, setActiveTab] = useState('overview');
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'overview');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   // Dashboard Data States
   const [contacts, setContacts] = useState([]);
@@ -23,9 +25,19 @@ export default function AdminLayout() {
   const [formMsg, setFormMsg] = useState({ type: '', text: '' });
 
   // Search & Filter States
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [gradeFilter, setGradeFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
+  const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || 'all');
+  const [gradeFilter, setGradeFilter] = useState(searchParams.get('grade') || 'all');
+
+  // Sync state to URL
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (activeTab !== 'overview') params.set('tab', activeTab);
+    if (searchQuery) params.set('search', searchQuery);
+    if (statusFilter !== 'all') params.set('status', statusFilter);
+    if (gradeFilter !== 'all') params.set('grade', gradeFilter);
+    setSearchParams(params, { replace: true });
+  }, [activeTab, searchQuery, statusFilter, gradeFilter, setSearchParams]);
 
   useEffect(() => {
     document.title = 'Admin Dashboard | DHIYONI Tutorials';
