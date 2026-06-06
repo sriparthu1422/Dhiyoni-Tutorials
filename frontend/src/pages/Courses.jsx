@@ -215,11 +215,11 @@ const courses = [
   },
   {
     category: ['extracurriculars'],
-    type: 'Skill Building',
+    type: 'Extracurriculars',
     typeColor: 'text-tertiary',
     langIcon: 'record_voice_over',
-    title: 'Public Speaking',
-    desc: 'Build confidence, improve articulation, and master the art of effective communication and stage presence.',
+    title: 'Abacus & Vedic Math',
+    desc: 'Boost calculation speed, accuracy, and mental math skill with abacus and Vedic techniques.',
     btnLabel: 'Enroll Now',
     btnStyle: 'bg-primary text-white hover:bg-primary-container',
     cardStyle: 'bg-white border border-outline-variant',
@@ -228,11 +228,11 @@ const courses = [
   },
   {
     category: ['extracurriculars'],
-    type: 'Skill Building',
+    type: 'Extracurriculars',
     typeColor: 'text-tertiary',
     langIcon: 'calculate',
-    title: 'Vedic Math',
-    desc: 'Enhance mental calculation speed, numerical agility, and mathematical logic with ancient Vedic techniques.',
+    title: 'BhagvatGeeta Reading',
+    desc: 'Understand timeless wisdom through guide reading meaning and life lessons from the Bhagavad Gita.',
     btnLabel: 'Enroll Now',
     btnStyle: 'bg-primary text-white hover:bg-primary-container',
     cardStyle: 'bg-white border border-outline-variant',
@@ -531,7 +531,7 @@ export default function Courses() {
             {/* Tab underline bar */}
             <div className="block border-b border-outline-variant overflow-x-auto no-scrollbar scroll-smooth"
               style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}>
-              <div className="flex flex-nowrap w-max lg:w-full lg:justify-center">
+              <div className="flex flex-nowrap w-max min-w-full" style={{ justifyContent: 'safe center' }}>
                 {filters.map(f => (
                   <button
                     key={f.value}
