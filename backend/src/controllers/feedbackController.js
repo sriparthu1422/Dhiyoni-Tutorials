@@ -31,7 +31,8 @@ export const submitFeedback = async (req, res) => {
       `;
 
       await sendEmail({
-        to: process.env.EMAIL_USER || 'sriparthu1422@gmail.com', // fallback to your email
+        to: process.env.EMAIL_TO || 'dhiyonitutorials.info@gmail.com',
+        replyTo: email,
         subject: `New Feedback from ${name} (${userType}) - ${rating} Stars`,
         html: emailContent,
       });
