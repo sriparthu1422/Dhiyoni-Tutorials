@@ -27,6 +27,8 @@ const legalLinks = [
 
 export default function Footer() {
   const [newsletterEmail, setNewsletterEmail] = useState('')
+
+  const handleNewsletterSubmit = async (e) => {
     e.preventDefault()
     if (!newsletterEmail) return
 
@@ -58,10 +60,9 @@ export default function Footer() {
   }
 
   return (
-    <>
-      <footer className="bg-surface-container-low border-t border-outline-variant relative z-10">
-        <div className="section-container pt-12 pb-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+    <footer className="bg-surface-container-low border-t border-outline-variant">
+      <div className="section-container py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link to="/">
@@ -162,7 +163,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-outline-variant relative z-10">
+      <div className="border-t border-outline-variant">
         <div className="section-container py-5 flex flex-col sm:flex-row justify-between items-center gap-2">
           <p className="text-on-surface-variant text-body-sm text-center">
             © 2025 DHIYONI Tutorials. All rights reserved. Designed by <Link to="https://nsp-portfolio-frontend.vercel.app/" className="text-orange-600 font-bold hover:underline">NSP</Link>

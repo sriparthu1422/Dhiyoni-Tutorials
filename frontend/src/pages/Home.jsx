@@ -9,6 +9,10 @@ import extraImg from '../assets/extra.png'
 import FeedbackSuccessModal from '../components/FeedbackSuccessModal'
 
 export default function Home() {
+  useEffect(() => {
+    document.title = 'DHIYONI Tutorials | Empowering Minds, Shaping Futures'
+  }, [])
+
   // Feedback State
   const [feedbackData, setFeedbackData] = useState({
     name: '',
@@ -67,10 +71,6 @@ export default function Home() {
       setFeedbackLoading(false)
     }
   }
-
-  useEffect(() => {
-    document.title = 'DHIYONI Tutorials | Empowering Minds, Shaping Futures'
-  }, [])
 
   return (
     <div className="page-transition">
@@ -483,7 +483,7 @@ export default function Home() {
       </section>
 
       {/* ── FEEDBACK SECTION ── */}
-      <section className="relative overflow-hidden bg-surface py-lg">
+      <section className="bg-surface-container-low py-16 relative overflow-hidden">
         <div className="section-container">
           <div className="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-outline-variant teal-shadow relative overflow-hidden">
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-secondary/10 rounded-full blur-2xl pointer-events-none" />
@@ -606,7 +606,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* ── END FEEDBACK SECTION ── */}
 
       <FeedbackSuccessModal 
         isOpen={isModalOpen} 
