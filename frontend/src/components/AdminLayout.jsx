@@ -16,6 +16,7 @@ export default function AdminLayout() {
   const [tutorSignups, setTutorSignups] = useState([]);
   const [newsletters, setNewsletters] = useState([]);
   const [tutors, setTutors] = useState([]);
+  const [feedbacks, setFeedbacks] = useState([]);
   
   // Modal & Edit States
   const [selectedItem, setSelectedItem] = useState(null);
@@ -89,12 +90,13 @@ export default function AdminLayout() {
     try {
       const headers = getHeaders();
       
-      const [resContacts, resParents, resTutorsSignup, resNews, resTutors] = await Promise.all([
+      const [resContacts, resParents, resTutorsSignup, resNews, resTutors, resFeedbacks] = await Promise.all([
         fetch('/api/contacts', { headers }),
         fetch('/api/parent-signups', { headers }),
         fetch('/api/tutor-signups', { headers }),
         fetch('/api/newsletters', { headers }),
-        fetch('/api/tutors') // Public API
+        fetch('/api/tutors'), // Public API
+        fetch('/api/feedback', { headers })
       ]);
 
       if (resContacts.ok) setContacts(await resContacts.json());
@@ -102,6 +104,10 @@ export default function AdminLayout() {
       if (resTutorsSignup.ok) setTutorSignups(await resTutorsSignup.json());
       if (resNews.ok) setNewsletters(await resNews.json());
       if (resTutors.ok) setTutors(await resTutors.json());
+      if (resFeedbacks.ok) {
+        const fbData = await resFeedbacks.json();
+        setFeedbacks(fbData.data || []);
+      }
     } catch (error) {
       console.error('Failed to load dashboard data:', error);
     }
@@ -144,7 +150,8 @@ export default function AdminLayout() {
         tutor: `/api/tutor-signups/${id}`,
         contact: `/api/contacts/${id}`,
         newsletter: `/api/newsletters/${id}`,
-        tutorProfile: `/api/tutors/${id}`
+        tutorProfile: `/api/tutors/${id}`,
+        feedback: `/api/feedback/${id}` // Added for feedback deletion if needed later
       };
 
       const response = await fetch(urlMap[type], {
@@ -308,6 +315,7 @@ export default function AdminLayout() {
               { id: 'parentSignups', label: 'Parent Requests', icon: 'person_search', badge: parentSignups.filter(x=>x.status==='Pending').length },
               { id: 'tutorSignups', label: 'Tutor Applications', icon: 'contact_page', badge: tutorSignups.filter(x=>x.status==='Pending').length },
               { id: 'contacts', label: 'Inquiries', icon: 'mail', badge: contacts.filter(x=>x.status==='Pending').length },
+              { id: 'feedbacks', label: 'Feedbacks', icon: 'forum', badge: 0 },
               { id: 'newsletters', label: 'Newsletter Subscribers', icon: 'campaign' },
               { id: 'tutorsCrud', label: 'Manage Tutors', icon: 'groups' },
               { id: 'settings', label: 'Security Settings', icon: 'settings' }
@@ -813,6 +821,90 @@ export default function AdminLayout() {
                     {newsletters.length === 0 && (
                       <tr>
                         <td colSpan="3" className="text-center py-10 text-on-surface-variant font-medium">No subscribers registered yet.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* TAB: FEEDBACKS */}
+          {activeTab === 'feedbacks' && (
+            <div className="bg-white rounded-2xl border border-outline-variant/30 teal-shadow p-6 space-y-6 animate-fade-in">
+              <div className="flex items-center justify-between border-b border-outline-variant/20 pb-4">
+                <h3 className="font-montserrat font-bold text-lg text-primary">User Feedbacks</h3>
+                <span className="bg-primary-fixed text-primary text-xs font-bold px-3 py-1 rounded-full">{feedbacks.length} Feedbacks</span>
+              </div>
+
+              <div className="relative max-w-md">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+                <input
+                  type="text"
+                  placeholder="Search by name, email, or user type..."
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  className="w-full bg-slate-50 border border-outline-variant rounded-xl py-2 pl-10 pr-4 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-body-sm"
+                />
+              </div>
+
+              <div className="overflow-x-auto rounded-xl border border-outline-variant/20">
+                <table className="w-full border-collapse text-left text-body-sm">
+                  <thead className="bg-slate-50 text-primary font-montserrat font-bold border-b border-outline-variant/20">
+                    <tr>
+                      <th className="p-4">Date</th>
+                      <th className="p-4">User Info</th>
+                      <th className="p-4">Type</th>
+                      <th className="p-4">Rating</th>
+                      <th className="p-4">Message</th>
+                      <th className="p-4 text-right">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-outline-variant/10">
+                    {feedbacks
+                      .filter(x => 
+                        x.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                        x.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        x.userType.toLowerCase().includes(searchQuery.toLowerCase())
+                      )
+                      .map(item => (
+                        <tr key={item._id} className="hover:bg-slate-50/50">
+                          <td className="p-4 text-on-surface-variant whitespace-nowrap">{formatTime(item.createdAt)}</td>
+                          <td className="p-4">
+                            <div className="font-bold text-primary">{item.name}</div>
+                            <div className="text-on-surface-variant text-xs">{item.email}</div>
+                            {item.contactNumber && <div className="text-on-surface-variant text-xs">{item.contactNumber}</div>}
+                          </td>
+                          <td className="p-4">
+                            <span className="bg-surface-variant text-on-surface-variant px-2 py-1 rounded text-xs font-semibold">
+                              {item.userType}
+                            </span>
+                          </td>
+                          <td className="p-4">
+                            <div className="flex text-[#FFB400]">
+                              {[...Array(item.rating)].map((_, i) => (
+                                <span key={i} className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: '"FILL" 1' }}>star</span>
+                              ))}
+                            </div>
+                          </td>
+                          <td className="p-4 min-w-[250px] max-w-[400px]">
+                            <p className="text-on-surface-variant truncate whitespace-normal line-clamp-3">
+                              {item.message}
+                            </p>
+                          </td>
+                          <td className="p-4 text-right">
+                            <button
+                              onClick={() => deleteItem('feedback', item._id)}
+                              className="text-rose-600 hover:text-rose-800 font-bold hover:underline"
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    {feedbacks.length === 0 && (
+                      <tr>
+                        <td colSpan="6" className="text-center py-10 text-on-surface-variant font-medium">No feedback entries found.</td>
                       </tr>
                     )}
                   </tbody>
