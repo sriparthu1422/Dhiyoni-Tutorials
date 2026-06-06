@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import grade3to5Img from '../assets/Grades 3-5.png'
 import grade6to12Img from '../assets/Grades 6-12.png'
@@ -6,8 +6,68 @@ import iit1Img from '../assets/IIT-1.png'
 import iit2Img from '../assets/IIT-2.png'
 import languageImg from '../assets/Language.png'
 import extraImg from '../assets/extra.png'
+import FeedbackSuccessModal from '../components/FeedbackSuccessModal'
 
 export default function Home() {
+  // Feedback State
+  const [feedbackData, setFeedbackData] = useState({
+    name: '',
+    userType: '',
+    email: '',
+    contactNumber: '',
+    message: '',
+    rating: 0,
+  })
+  const [feedbackLoading, setFeedbackLoading] = useState(false)
+  const [feedbackError, setFeedbackError] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const handleFeedbackChange = (e) => {
+    const { name, value } = e.target
+    setFeedbackData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleRating = (rate) => {
+    setFeedbackData(prev => ({ ...prev, rating: rate }))
+  }
+
+  const handleFeedbackSubmit = async (e) => {
+    e.preventDefault()
+    setFeedbackError('')
+    
+    if (feedbackData.rating === 0) {
+      setFeedbackError('Please select a rating (1-5 stars).')
+      return
+    }
+
+    setFeedbackLoading(true)
+    try {
+      const res = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(feedbackData),
+      })
+      const data = await res.json()
+      
+      if (!res.ok) throw new Error(data.message || 'Something went wrong')
+      
+      // Success
+      setIsModalOpen(true)
+      setFeedbackData({
+        name: '',
+        userType: '',
+        email: '',
+        contactNumber: '',
+        message: '',
+        rating: 0,
+      })
+    } catch (err) {
+      setFeedbackError(err.message)
+    } finally {
+      setFeedbackLoading(false)
+    }
+  }
+
   useEffect(() => {
     document.title = 'DHIYONI Tutorials | Empowering Minds, Shaping Futures'
   }, [])
@@ -421,6 +481,137 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── FEEDBACK SECTION ── */}
+      <section className="relative overflow-hidden bg-surface py-lg">
+        <div className="section-container">
+          <div className="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-outline-variant teal-shadow relative overflow-hidden">
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-secondary/10 rounded-full blur-2xl pointer-events-none" />
+            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-tertiary/10 rounded-full blur-2xl pointer-events-none" />
+            
+            <div className="relative z-10 max-w-4xl mx-auto">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-secondary-fixed text-secondary mb-4">
+                  <span className="material-symbols-outlined text-[24px]">forum</span>
+                </div>
+                <h3 className="font-montserrat font-bold text-headline-md md:text-headline-lg text-primary mb-2">
+                  We Value Your Feedback
+                </h3>
+                <p className="font-inter text-body-md text-on-surface-variant">
+                  Help us improve by sharing your experience. We'd love to hear from you!
+                </p>
+              </div>
+
+              {feedbackError && (
+                <div className="bg-error/10 text-error p-3 rounded-lg mb-6 text-center text-sm font-semibold">
+                  {feedbackError}
+                </div>
+              )}
+
+              <form onSubmit={handleFeedbackSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block font-inter text-label-md font-semibold text-primary mb-1">Full Name *</label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    value={feedbackData.name}
+                    onChange={handleFeedbackChange}
+                    className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                    placeholder="John Doe"
+                  />
+                </div>
+                <div>
+                  <label className="block font-inter text-label-md font-semibold text-primary mb-1">I am a... *</label>
+                  <select
+                    name="userType"
+                    required
+                    value={feedbackData.userType}
+                    onChange={handleFeedbackChange}
+                    className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-on-surface"
+                  >
+                    <option value="" disabled>Select User Type</option>
+                    <option value="Teacher">Teacher</option>
+                    <option value="Student">Student</option>
+                    <option value="Parent">Parent</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block font-inter text-label-md font-semibold text-primary mb-1">Email Address *</label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    value={feedbackData.email}
+                    onChange={handleFeedbackChange}
+                    className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                    placeholder="john@example.com"
+                  />
+                </div>
+                <div>
+                  <label className="block font-inter text-label-md font-semibold text-primary mb-1">Contact Number (Optional)</label>
+                  <input
+                    type="tel"
+                    name="contactNumber"
+                    value={feedbackData.contactNumber}
+                    onChange={handleFeedbackChange}
+                    className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                    placeholder="+91 98765 43210"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block font-inter text-label-md font-semibold text-primary mb-1">Your Feedback *</label>
+                  <textarea
+                    name="message"
+                    required
+                    rows="3"
+                    value={feedbackData.message}
+                    onChange={handleFeedbackChange}
+                    className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none"
+                    placeholder="Tell us what you think..."
+                  ></textarea>
+                </div>
+                <div className="md:col-span-2 flex flex-col items-center">
+                  <label className="block font-inter text-label-md font-semibold text-primary mb-2">Rate your experience *</label>
+                  <div className="flex gap-2 mb-4">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => handleRating(star)}
+                        className="transition-transform hover:scale-110 focus:outline-none"
+                      >
+                        <span 
+                          className="material-symbols-outlined text-4xl transition-colors duration-200"
+                          style={{ 
+                            color: star <= feedbackData.rating ? '#FFB400' : '#E0E0E0',
+                            fontVariationSettings: star <= feedbackData.rating ? '"FILL" 1' : '"FILL" 0'
+                          }}
+                        >
+                          star
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                  <button 
+                    type="submit" 
+                    disabled={feedbackLoading}
+                    className="bg-primary text-white font-bold py-3 px-10 rounded-xl hover:bg-primary-container transition-all shadow-md active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                  >
+                    {feedbackLoading ? 'Submitting...' : 'Submit Feedback'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* ── END FEEDBACK SECTION ── */}
+
+      <FeedbackSuccessModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
 
     </div>
   )
