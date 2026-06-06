@@ -43,7 +43,7 @@ export default function Home() {
                   <span className="font-inter text-body-sm normal-case text-black">Top 1% tutors</span>
                 </span>
               </div>
-              <div className="flex items-center gap-sm">
+              <div className="flex items-center gap-sm ml-6 sm:ml-0">
                 <div className="bg-secondary-fixed text-secondary p-xs rounded-full flex items-center justify-center w-8 h-8">
                   <span className="material-symbols-outlined text-[18px]">psychology</span>
                 </div>
