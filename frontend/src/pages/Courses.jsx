@@ -9,6 +9,7 @@ const filters = [
   { label: 'IIT/NEET Foundation', value: 'foundation' },
   { label: 'IIT/NEET Coaching', value: 'coaching' },
   { label: 'Languages', value: 'languages' },
+  { label: 'Extracurriculars', value: 'extracurriculars' },
 ]
 
 const courses = [
@@ -206,6 +207,32 @@ const courses = [
     langIcon: 'edit_note',
     title: 'French',
     desc: 'Learn French with beginner-friendly modules focused on pronunciation, vocabulary, DELF preparation & practical communication skills.',
+    btnLabel: 'Enroll Now',
+    btnStyle: 'bg-primary text-white hover:bg-primary-container',
+    cardStyle: 'bg-white border border-outline-variant',
+    textStyle: 'text-on-surface',
+    descStyle: 'text-on-surface-variant',
+  },
+  {
+    category: ['extracurriculars'],
+    type: 'Skill Building',
+    typeColor: 'text-tertiary',
+    langIcon: 'record_voice_over',
+    title: 'Public Speaking',
+    desc: 'Build confidence, improve articulation, and master the art of effective communication and stage presence.',
+    btnLabel: 'Enroll Now',
+    btnStyle: 'bg-primary text-white hover:bg-primary-container',
+    cardStyle: 'bg-white border border-outline-variant',
+    textStyle: 'text-on-surface',
+    descStyle: 'text-on-surface-variant',
+  },
+  {
+    category: ['extracurriculars'],
+    type: 'Skill Building',
+    typeColor: 'text-tertiary',
+    langIcon: 'calculate',
+    title: 'Vedic Math',
+    desc: 'Enhance mental calculation speed, numerical agility, and mathematical logic with ancient Vedic techniques.',
     btnLabel: 'Enroll Now',
     btnStyle: 'bg-primary text-white hover:bg-primary-container',
     cardStyle: 'bg-white border border-outline-variant',
@@ -723,6 +750,8 @@ export default function Courses() {
                     ? "Hi, I would like to enroll in the IIT/NEET Coaching Program at DHIYONI Tutorials. Could you please help me with the details, such as the subjects covered, class schedule, teaching methodology, fees, and the enrollment process?\n\nThank you."
                     : activeFilter === 'languages'
                     ? "Hi, I would like to enroll in the Languages Program at DHIYONI Tutorials. Could you please help me with the details, such as the subjects covered, class schedule, teaching methodology, fees, and the enrollment process?\n\nThank you."
+                    : activeFilter === 'extracurriculars'
+                    ? "Hi, I would like to enroll in the Extracurriculars Program at DHIYONI Tutorials. Could you please help me with the details, such as the subjects covered, class schedule, teaching methodology, fees, and the enrollment process?\n\nThank you."
                     : "Hi, I would like to enroll in the Grade 6–12 Program at DHIYONI Tutorials. Could you please help me with the details, such as the subjects covered, class schedule, teaching methodology, fees, and the enrollment process?\n\nThank you."
                 )}`}
                 target="_blank"
