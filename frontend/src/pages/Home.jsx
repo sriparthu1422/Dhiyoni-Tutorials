@@ -6,7 +6,6 @@ import iit1Img from '../assets/IIT-1.png'
 import iit2Img from '../assets/IIT-2.png'
 import languageImg from '../assets/Language.png'
 import extraImg from '../assets/extra.png'
-import FeedbackSuccessModal from '../components/FeedbackSuccessModal'
 
 export default function Home() {
   useEffect(() => {
@@ -24,7 +23,7 @@ export default function Home() {
   })
   const [feedbackLoading, setFeedbackLoading] = useState(false)
   const [feedbackError, setFeedbackError] = useState('')
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [feedbackSuccess, setFeedbackSuccess] = useState(false)
 
   const handleFeedbackChange = (e) => {
     const { name, value } = e.target
@@ -56,7 +55,7 @@ export default function Home() {
       if (!res.ok) throw new Error(data.message || 'Something went wrong')
       
       // Success
-      setIsModalOpen(true)
+      setFeedbackSuccess(true)
       setFeedbackData({
         name: '',
         userType: '',
@@ -65,6 +64,10 @@ export default function Home() {
         message: '',
         rating: 0,
       })
+      // Clear success message after 5 seconds
+      setTimeout(() => {
+        setFeedbackSuccess(false)
+      }, 5000)
     } catch (err) {
       setFeedbackError(err.message)
     } finally {
@@ -600,17 +603,28 @@ export default function Home() {
                   >
                     {feedbackLoading ? 'Submitting...' : 'Submit Feedback'}
                   </button>
+                  
+                  {/* Inline Success Message */}
+                  {feedbackSuccess && (
+                    <div className="mt-6 w-full max-w-md bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl p-5 text-center animate-fade-in-up shadow-sm">
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <span className="material-symbols-outlined text-[24px] text-emerald-600">check_circle</span>
+                        <h4 className="font-montserrat font-bold text-lg">🎉 Feedback Submitted Successfully!</h4>
+                      </div>
+                      <p className="font-inter text-body-sm mb-2">
+                        Thank you for sharing your feedback with us.
+                      </p>
+                      <p className="font-inter text-body-sm">
+                        Your feedback is very important and helps us improve our services.
+                      </p>
+                    </div>
+                  )}
                 </div>
               </form>
             </div>
           </div>
         </div>
       </section>
-
-      <FeedbackSuccessModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-      />
 
     </div>
   )
