@@ -45,7 +45,8 @@ export const createTutorSignup = async (req, res) => {
       await sendTutorApplicationEmail(signup);
     } catch (emailError) {
       console.error('⚠️ SMTP Failure: Failed to forward application email:', emailError.message);
-      // We log the error but still return 201 since the database save was successful
+      await TutorSignup.findByIdAndDelete(signup._id);
+      return res.status(500).json({ message: 'Failed to send confirmation email. Please check SMTP settings or try again later.' });
     }
 
     res.status(201).json(signup);

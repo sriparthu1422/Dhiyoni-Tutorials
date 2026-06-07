@@ -38,7 +38,8 @@ export const submitFeedback = async (req, res) => {
       });
     } catch (emailError) {
       console.error('Error sending feedback notification email:', emailError);
-      // We don't fail the request if email sending fails
+      await Feedback.findByIdAndDelete(feedback._id);
+      return res.status(500).json({ success: false, message: 'Failed to send notification email. Please check SMTP settings or try again later.' });
     }
 
     res.status(201).json({

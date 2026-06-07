@@ -37,7 +37,8 @@ export const createParentSignup = async (req, res) => {
       await sendParentSignupEmail(signup);
     } catch (emailError) {
       console.error('⚠️ SMTP Failure: Failed to forward parent signup email:', emailError.message);
-      // We log the error but still return 201 since the database save was successful
+      await ParentSignup.findByIdAndDelete(signup._id);
+      return res.status(500).json({ message: 'Failed to send confirmation email. Please check SMTP settings or try again later.' });
     }
 
     res.status(201).json(signup);
