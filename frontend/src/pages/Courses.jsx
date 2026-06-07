@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import student from '../assets/student.png'
 import student2 from '../assets/student2.png'
@@ -414,6 +414,9 @@ function CourseCard({ course }) {
 export default function Courses() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [activeFilter, setActiveFilter] = useState(searchParams.get('filter') || 'grade-3-5')
+  
+  const containerRef = useRef(null)
+  const buttonRefs = useRef({})
 
   // Auto-rotating Image Carousel
   const IMAGES = [student, student2]
@@ -432,6 +435,25 @@ export default function Courses() {
       setActiveFilter(filterParam)
     }
   }, [searchParams])
+
+  // Scroll active filter into view
+  useEffect(() => {
+    if (activeFilter && buttonRefs.current[activeFilter] && containerRef.current) {
+      const container = containerRef.current
+      const button = buttonRefs.current[activeFilter]
+      
+      const containerRect = container.getBoundingClientRect()
+      const buttonRect = button.getBoundingClientRect()
+
+      if (buttonRect.left < containerRect.left || buttonRect.right > containerRect.right) {
+        // Scroll so button is roughly in the center
+        container.scrollTo({
+          left: button.offsetLeft - container.offsetWidth / 2 + button.offsetWidth / 2,
+          behavior: 'smooth'
+        })
+      }
+    }
+  }, [activeFilter])
 
   const handleFilterChange = (filterVal) => {
     setActiveFilter(filterVal)
@@ -531,12 +553,16 @@ export default function Courses() {
         <div className="mb-md">
           <div className="flex flex-col gap-md">
             {/* Tab underline bar */}
-            <div className="block border-b border-outline-variant overflow-x-auto no-scrollbar scroll-smooth"
-              style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}>
+            <div 
+              ref={containerRef}
+              className="block border-b border-outline-variant overflow-x-auto no-scrollbar scroll-smooth"
+              style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}
+            >
               <div className="flex flex-nowrap w-max min-w-full" style={{ justifyContent: 'safe center' }}>
                 {filters.map(f => (
                   <button
                     key={f.value}
+                    ref={(el) => (buttonRefs.current[f.value] = el)}
                     onClick={() => handleFilterChange(f.value)}
                     className={`filter-btn px-4 md:px-lg py-sm md:py-md font-montserrat font-semibold text-headline-lg-mobile md:text-headline-md border-b-4 transition-all whitespace-nowrap shrink-0 ${
                       activeFilter === f.value
