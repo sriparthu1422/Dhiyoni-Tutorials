@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { AnimatedSection } from '../components/shared'
+import aboutHeroImg from '../assets/About_page_image.png'
 
 function AnimatedCounter({ target, duration = 2000, suffix = '', formatter }) {
   const [count, setCount] = useState(0)
@@ -102,7 +103,7 @@ export default function About() {
             <img
               alt="Our Team"
               className="rounded-xl teal-shadow object-cover w-full h-[300px] md:h-[400px]"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCD6wVW1djEUi7reept4URSRtAyuaR2OJxse-0eW1CWy3nABcUyRxS-UPR5Glw3Hl-7YOWQ5bpGAbpTcRrvCAuQeaSPQ9duBA4ky0P_6qLlB6QZkAXV_uYiekTvm5sP-VL5HSRKYgdu1LQYyOn418uagjIbWEpCi_dr68x1mcZBTKyE6M2pTKb3jdsmggGHEQ53dub4v2QY1AxPE5JIWS7gx3D8oZHOUryfuAr7blqneB4h3ZdN9xdS0S8We4ARFPpQ2KTNlQjp-0gl"
+              src={aboutHeroImg}
             />
             {/* Floating badge */}
             <div className="absolute -bottom-6 -left-6 bg-secondary text-white p-md rounded-lg teal-shadow hidden lg:block">
