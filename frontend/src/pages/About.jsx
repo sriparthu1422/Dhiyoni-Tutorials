@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { AnimatedSection } from '../components/shared'
-import aboutHeroImg from '../assets/About_page_image.png'
+import aboutHeroImg from '../assets/About_page_image_1.png'
 
 function AnimatedCounter({ target, duration = 2000, suffix = '', formatter }) {
   const [count, setCount] = useState(0)
