@@ -124,9 +124,9 @@ export default function About() {
               ))}
             </div>
             {/* Floating badge */}
-            <div className="absolute -bottom-6 -left-6 bg-secondary text-white p-md rounded-lg teal-shadow hidden lg:block">
-              <div className="font-montserrat font-semibold text-headline-md">15+ Years</div>
-              <div className="font-inter text-body-sm opacity-90">Academic Excellence</div>
+            <div className="absolute bottom-4 left-4 lg:-bottom-6 lg:-left-6 bg-secondary text-white p-3 lg:p-md rounded-lg teal-shadow z-20">
+              <div className="font-montserrat font-semibold text-headline-sm lg:text-headline-md">15+ Years</div>
+              <div className="font-inter text-body-sm lg:opacity-90">Academic Excellence</div>
             </div>
           </AnimatedSection>
         </div>
