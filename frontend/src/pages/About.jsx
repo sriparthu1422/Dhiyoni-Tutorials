@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { AnimatedSection } from '../components/shared'
-import aboutHeroImg from '../assets/About_page_image_1.png'
+import aboutHeroImg1 from '../assets/About_page_image_1.png'
+import aboutHeroImg2 from '../assets/About_page_image_2.png'
 
 function AnimatedCounter({ target, duration = 2000, suffix = '', formatter }) {
   const [count, setCount] = useState(0)
@@ -66,8 +67,18 @@ function AnimatedCounter({ target, duration = 2000, suffix = '', formatter }) {
 }
 
 export default function About() {
+  const HERO_IMAGES = [aboutHeroImg1, aboutHeroImg2]
+  const [currentImageIdx, setCurrentImageIdx] = useState(0)
+
   useEffect(() => {
     document.title = 'About Us | DHIYONI Tutorials'
+  }, [])
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImageIdx(prev => (prev + 1) % HERO_IMAGES.length)
+    }, 3000)
+    return () => clearInterval(timer)
   }, [])
 
   return (
@@ -98,13 +109,20 @@ export default function About() {
             </div>
           </AnimatedSection>
 
-          {/* Right: Image + Floating Badge */}
+          {/* Right: Image Carousel + Floating Badge */}
           <AnimatedSection delay={150} className="relative mt-md lg:mt-0">
-            <img
-              alt="Our Team"
-              className="rounded-xl teal-shadow object-cover w-full h-[300px] md:h-[400px]"
-              src={aboutHeroImg}
-            />
+            <div className="relative w-full h-[300px] md:h-[400px] rounded-xl teal-shadow overflow-hidden">
+              {HERO_IMAGES.map((img, index) => (
+                <img
+                  key={index}
+                  alt="Our Team"
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+                    currentImageIdx === index ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                  }`}
+                  src={img}
+                />
+              ))}
+            </div>
             {/* Floating badge */}
             <div className="absolute -bottom-6 -left-6 bg-secondary text-white p-md rounded-lg teal-shadow hidden lg:block">
               <div className="font-montserrat font-semibold text-headline-md">15+ Years</div>
