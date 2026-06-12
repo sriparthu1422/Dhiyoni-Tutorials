@@ -14,7 +14,7 @@ export default function Home() {
     "@type": "EducationalOrganization",
     "name": "DHIYONI Tutorials",
     "url": "https://dhiyonitutorials.com",
-    "logo": "https://dhiyonitutorials.com/src/assets/DT5.png",
+    "logo": "https://dhiyonitutorials.com/favicon.png",
     "description": "Comprehensive online tuition for Grades 3 to 12. Personalized learning path across CBSE, ICSE, and State Boards.",
     "address": {
       "@type": "PostalAddress",
