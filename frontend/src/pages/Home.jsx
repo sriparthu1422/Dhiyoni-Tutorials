@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import SEO from '../components/SEO'
 import grade3to5Img from '../assets/Grades 3-5.png'
 import grade6to12Img from '../assets/Grades 6-12.png'
 import iit1Img from '../assets/IIT-1.png'
@@ -8,9 +9,19 @@ import languageImg from '../assets/Language.png'
 import extraImg from '../assets/extra.png'
 
 export default function Home() {
-  useEffect(() => {
-    document.title = 'DHIYONI Tutorials | Empowering Minds, Shaping Futures'
-  }, [])
+  const homeSchema = {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "DHIYONI Tutorials",
+    "url": "https://dhiyonitutorials.com",
+    "logo": "https://dhiyonitutorials.com/src/assets/DT5.png",
+    "description": "Comprehensive online tuition for Grades 3 to 12. Personalized learning path across CBSE, ICSE, and State Boards.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Hyderabad",
+      "addressCountry": "IN"
+    }
+  };
 
   // Feedback State
   const [feedbackData, setFeedbackData] = useState({
@@ -77,6 +88,13 @@ export default function Home() {
 
   return (
     <div className="page-transition">
+      <SEO 
+        title="DHIYONI Tutorials | Empowering Minds, Shaping Futures"
+        description="Comprehensive online tuition for Grades 3 to 12. Personalized learning across CBSE, ICSE, and State Boards with expert educators."
+        keywords="online tuition, CBSE coaching, ICSE tuition, IIT NEET Foundation, expert tutors India, Dhiyoni Tutorials"
+        canonicalPath="/"
+        schema={homeSchema}
+      />
 
       {/* ── HERO SECTION ─────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-surface py-lg">
@@ -223,7 +241,7 @@ export default function Home() {
             <div className="group relative overflow-hidden rounded-2xl border border-outline-variant teal-shadow flex flex-col">
               <div className="aspect-video overflow-hidden">
                 <img
-                  alt="Elementary Education"
+                  alt="Elementary Education Grades 3-5 students learning online"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   loading="lazy"
                   src={grade3to5Img}
@@ -253,7 +271,7 @@ export default function Home() {
             <div className="group relative overflow-hidden rounded-2xl border border-outline-variant teal-shadow flex flex-col">
               <div className="aspect-video overflow-hidden">
                 <img
-                  alt="Secondary Education"
+                  alt="Secondary Education Grades 6-12 online tuition"
                   className="w-full h-full object-cover object-[center_80%] group-hover:scale-110 transition-transform duration-500"
                   loading="lazy"
                   src={grade6to12Img}
@@ -283,7 +301,7 @@ export default function Home() {
             <div className="group relative overflow-hidden rounded-2xl border border-outline-variant teal-shadow flex flex-col">
               <div className="aspect-video overflow-hidden">
                 <img
-                  alt="IIT NEET Prep"
+                  alt="IIT NEET Foundation Courses for high school students"
                   className="w-full h-full object-cover object-[center_30%] group-hover:scale-110 transition-transform duration-500"
                   src={iit1Img}
                 />
@@ -312,7 +330,7 @@ export default function Home() {
             <div className="group relative overflow-hidden rounded-2xl border border-outline-variant teal-shadow flex flex-col">
               <div className="aspect-video overflow-hidden">
                 <img
-                  alt="IIT NEET Coaching"
+                  alt="IIT NEET Coaching and Engineering Entrance preparation"
                   className="w-full h-full object-cover object-[center_16%] group-hover:scale-110 transition-transform duration-500"
                   src={iit2Img}
                 />
@@ -341,7 +359,7 @@ export default function Home() {
             <div className="group relative overflow-hidden rounded-2xl border border-outline-variant teal-shadow flex flex-col">
               <div className="aspect-video overflow-hidden">
                 <img
-                  alt="Language Excellence"
+                  alt="Language Excellence and Communication Skills online classes"
                   className="w-full h-full object-cover object-[center_20%] group-hover:scale-110 transition-transform duration-500"
                   src={languageImg}
                 />
@@ -370,7 +388,7 @@ export default function Home() {
             <div className="group relative overflow-hidden rounded-2xl border border-outline-variant teal-shadow flex flex-col">
               <div className="aspect-video overflow-hidden">
                 <img
-                  alt="Extracurriculars"
+                  alt="Extracurricular Activities Coding and Vedic Math"
                   className="w-full h-full object-cover object-[center_25%] group-hover:scale-110 transition-transform duration-500"
                   src={extraImg}
                 />

@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { AnimatedSection } from '../components/shared'
+import SEO from '../components/SEO'
 import aboutHeroImg1 from '../assets/About_page_image_1.png'
 import aboutHeroImg2 from '../assets/About_page_image_2.png'
 
@@ -71,10 +72,6 @@ export default function About() {
   const [currentImageIdx, setCurrentImageIdx] = useState(0)
 
   useEffect(() => {
-    document.title = 'About Us | DHIYONI Tutorials'
-  }, [])
-
-  useEffect(() => {
     const timer = setInterval(() => {
       setCurrentImageIdx(prev => (prev + 1) % HERO_IMAGES.length)
     }, 3000)
@@ -83,6 +80,12 @@ export default function About() {
 
   return (
     <div className="page-transition">
+      <SEO 
+        title="About Us | DHIYONI Tutorials - 15+ Years of Excellence"
+        description="Learn about DHIYONI Tutorials, our mission to democratize high-quality education, and our 15+ years of academic excellence and 98% success rate."
+        keywords="About Dhiyoni, Academic Excellence, Holistic Education, online tuition India, educational hub"
+        canonicalPath="/about"
+      />
 
       {/* ── HERO SECTION ─────────────────────────────────────── */}
       <section className="relative py-lg md:py-xl overflow-hidden bg-surface-container-low">

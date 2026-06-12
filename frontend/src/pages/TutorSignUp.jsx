@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import SEO from '../components/SEO'
 
 const inputClass =
   'bg-surface rounded-xl border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 py-3.5 px-md font-inter text-body-md outline-none transition-all w-full'
@@ -13,10 +14,6 @@ export default function TutorSignup() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const formRef = useRef(null)
-
-  useEffect(() => {
-    document.title = 'Tutor Sign Up | DHIYONI Tutorials'
-  }, [])
 
   // Validate step fields
   const validateStep = (step) => {
@@ -182,6 +179,12 @@ export default function TutorSignup() {
 
   return (
     <div className="page-transition">
+      <SEO 
+        title="Become a Tutor | DHIYONI Tutorials"
+        description="Join DHIYONI Tutorials as an online educator. Teach CBSE, ICSE, and State Board students. Apply today to become an expert tutor."
+        keywords="Become an online tutor, teaching jobs, online tuition jobs, tutor application, Dhiyoni educators"
+        canonicalPath="/tutor-signup"
+      />
       <main className="flex-grow w-full max-w-container-max mx-auto px-4 md:px-lg pt-lg pb-lg grid grid-cols-1 lg:grid-cols-12 gap-xl items-start">
 
         {/* ── SIDEBAR ─────────────────────────────────────────── */}

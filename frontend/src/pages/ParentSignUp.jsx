@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import SEO from '../components/SEO'
 
 const inputClass =
   'w-full p-sm bg-surface border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all font-inter text-body-md'
@@ -8,10 +9,6 @@ export default function ParentSignup() {
   const [errors, setErrors] = useState({})
   const [submitError, setSubmitError] = useState('')
   const [showSuccessModal, setShowSuccessModal] = useState(false)
-
-  useEffect(() => {
-    document.title = 'Parent Sign Up | DHIYONI Tutorials'
-  }, [])
 
   const validateForm = (formData) => {
     const newErrors = {}
@@ -107,7 +104,13 @@ export default function ParentSignup() {
 
   return (
     <div className="page-transition">
-      <main className="max-w-container-max mx-auto px-4 md:px-lg py-lg">
+      <SEO 
+        title="Parent & Student Sign Up | DHIYONI Tutorials"
+        description="Enroll your child at DHIYONI Tutorials today. Sign up for personalized online tuition in CBSE, ICSE, and State Board curriculum."
+        keywords="Parent signup, student enrollment, online tuition registration, join Dhiyoni Tutorials"
+        canonicalPath="/parent-signup"
+      />
+      <main className="max-w-container-max mx-auto px-4 md:px-lg py-xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-xl">
 
           {/* ── LEFT: REGISTRATION FORM ────────────────────────── */}

@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import SEO from '../components/SEO'
 import student from '../assets/student.png'
 import student2 from '../assets/student2.png'
 
@@ -460,10 +461,6 @@ export default function Courses() {
     setSearchParams({ filter: filterVal })
   }
 
-  useEffect(() => {
-    document.title = 'Courses & Programs | DHIYONI Tutorials'
-  }, [])
-
   const activeLabel = filters.find(f => f.value === activeFilter)?.label || 'Grade 3-5'
 
   const visibleCourses = courses.filter(c =>
@@ -472,6 +469,12 @@ export default function Courses() {
 
   return (
     <div className="page-transition">
+      <SEO 
+        title="Explore Courses & Programs | DHIYONI Tutorials"
+        description="Browse our comprehensive list of online tuition programs, foundation courses, coding classes, and extracurricular activities for students of all grades."
+        keywords="online courses, CBSE tuition, ICSE tuition, IIT foundation, NEET coaching, online coding classes, vedic math, Dhiyoni Tutorials"
+        canonicalPath="/courses"
+      />
       <main className="max-w-container-max mx-auto px-4 md:px-lg py-md md:py-lg">
 
         {/* ── HERO SECTION ───────────────────────────────────── */}

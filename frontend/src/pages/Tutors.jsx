@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import SEO from '../components/SEO'
 
 const tutors = [
   {
@@ -44,8 +45,6 @@ export default function Tutors() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    document.title = 'Tutors Directory | DHIYONI Tutorials'
-    
     const fetchTutors = async () => {
       try {
         const response = await fetch('/api/tutors')
@@ -72,6 +71,12 @@ export default function Tutors() {
 
   return (
     <div className="page-transition">
+      <SEO 
+        title="Our Expert Tutors | DHIYONI Tutorials"
+        description="Meet our highly qualified and verified subject matter experts for CBSE, ICSE, and State Boards."
+        keywords="Hire online tutors, expert educators, CBSE tutors online, ICSE tutors, subject matter experts"
+        canonicalPath="/tutors"
+      />
       <main className="relative">
 
         {/* ── HERO SECTION ─────────────────────────────────────── */}

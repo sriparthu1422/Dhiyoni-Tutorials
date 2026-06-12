@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import SEO from '../components/SEO'
 import logo from '../assets/logo.png'
 import map from '../assets/map.png' 
 
@@ -52,10 +53,6 @@ export default function Contact() {
   const [btnState, setBtnState] = useState('idle') // idle | sending | sent
   const [formData, setFormData] = useState({ name: '', email: '', subject: 'Course Inquiry', message: '' })
 
-  useEffect(() => {
-    document.title = 'Contact Us - DHIYONI Tutorials'
-  }, [])
-
   const update = (field) => (e) => setFormData({ ...formData, [field]: e.target.value })
 
   const handleSubmit = async (e) => {
@@ -102,6 +99,12 @@ export default function Contact() {
 
   return (
     <div className="page-transition">
+      <SEO 
+        title="Contact Us | Start Your Learning Journey | DHIYONI Tutorials"
+        description="Get in touch with DHIYONI Tutorials. Fill out our contact form, find our location on the map, or check out our FAQs to learn more about our online classes."
+        keywords="Contact Dhiyoni Tutorials, online tuition enquiry, tutoring services Hyderabad, education contact"
+        canonicalPath="/contact"
+      />
       <main className="max-w-container-max mx-auto px-4 md:px-lg py-lg">
 
         {/* ── HERO SECTION ─────────────────────────────────────── */}
