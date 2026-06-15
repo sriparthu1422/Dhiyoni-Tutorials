@@ -32,7 +32,7 @@ export default function Navbar() {
     >
       <nav className="section-container flex justify-between items-center py-1">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 shrink-0">
+        <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="DHIYONI Tutorials Home" title="DHIYONI Tutorials">
           <img
             src={logo}
             alt="DHIYONI Tutorials"

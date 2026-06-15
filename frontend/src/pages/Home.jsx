@@ -11,16 +11,31 @@ import extraImg from '../assets/extra.png'
 export default function Home() {
   const homeSchema = {
     "@context": "https://schema.org",
-    "@type": "EducationalOrganization",
-    "name": "DHIYONI Tutorials",
-    "url": "https://dhiyonitutorials.com",
-    "logo": "https://dhiyonitutorials.com/favicon.png",
-    "description": "Comprehensive online tuition for Grades 3 to 12. Personalized learning path across CBSE, ICSE, and State Boards.",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Hyderabad",
-      "addressCountry": "IN"
-    }
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://dhiyonitutorials.com/#website",
+        "url": "https://dhiyonitutorials.com",
+        "name": "DHIYONI Tutorials",
+        "description": "Personalized Learning for Academic Excellence",
+        "publisher": {
+          "@id": "https://dhiyonitutorials.com/#organization"
+        }
+      },
+      {
+        "@type": "EducationalOrganization",
+        "@id": "https://dhiyonitutorials.com/#organization",
+        "name": "DHIYONI Tutorials",
+        "url": "https://dhiyonitutorials.com",
+        "logo": "https://dhiyonitutorials.com/favicon.png",
+        "description": "Comprehensive online tuition for Grades 3 to 12. Personalized learning path across CBSE, ICSE, and State Boards.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Hyderabad",
+          "addressCountry": "IN"
+        }
+      }
+    ]
   };
 
   // Feedback State
@@ -89,9 +104,9 @@ export default function Home() {
   return (
     <div className="page-transition">
       <SEO 
-        title="DHIYONI Tutorials | Empowering Minds, Shaping Futures"
-        description="Comprehensive online tuition for Grades 3 to 12. Personalized learning across CBSE, ICSE, and State Boards with expert educators."
-        keywords="online tuition, CBSE coaching, ICSE tuition, IIT NEET Foundation, expert tutors India, Dhiyoni Tutorials"
+        title="DHIYONI Tutorials | Personalized Learning for Academic Excellence"
+        description="DHIYONI Tutorials provides comprehensive online tuition for Grades 3 to 12. Personalized learning across CBSE, ICSE, and State Boards with expert educators."
+        keywords="Dhiyoni Tutorials, online tuition, CBSE coaching, ICSE tuition, IIT NEET Foundation, expert tutors India"
         canonicalPath="/"
         schema={homeSchema}
       />
@@ -106,7 +121,7 @@ export default function Home() {
               ONLINE EDUCATION REDEFINED
             </span>
             <h1 className="font-montserrat font-bold text-display-lg-mobile lg:text-display-lg text-primary mb-md leading-tight">
-              Empowering Minds, <br className="hidden sm:block" />{' '}
+              DHIYONI Tutorials: <br className="hidden sm:block" /> Empowering Minds, <br className="hidden sm:block" />{' '}
               <span style={{ color: 'rgb(240, 90, 40)' }}>Shaping Futures</span>
             </h1>
             <p className="font-inter text-body-md lg:text-body-lg text-on-surface-variant mb-lg max-w-xl mx-auto lg:mx-0">
