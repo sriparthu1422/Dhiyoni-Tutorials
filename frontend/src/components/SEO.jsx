@@ -7,7 +7,7 @@ export default function SEO({
   canonicalPath = '', 
   schema 
 }) {
-  const siteUrl = 'https://dhiyonitutorials.com';
+  const siteUrl = 'https://www.dhiyonitutorials.com';
   const fullCanonicalUrl = `${siteUrl}${canonicalPath}`;
 
   return (

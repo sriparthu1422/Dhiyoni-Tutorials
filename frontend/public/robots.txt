@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dhiyonitutorials.com/sitemap.xml
+Sitemap: https://www.dhiyonitutorials.com/sitemap.xml

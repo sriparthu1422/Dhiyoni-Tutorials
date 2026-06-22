@@ -14,20 +14,20 @@ export default function Home() {
     "@graph": [
       {
         "@type": "WebSite",
-        "@id": "https://dhiyonitutorials.com/#website",
-        "url": "https://dhiyonitutorials.com",
+        "@id": "https://www.dhiyonitutorials.com/#website",
+        "url": "https://www.dhiyonitutorials.com",
         "name": "DHIYONI Tutorials",
         "description": "Personalized Learning for Academic Excellence",
         "publisher": {
-          "@id": "https://dhiyonitutorials.com/#organization"
+          "@id": "https://www.dhiyonitutorials.com/#organization"
         }
       },
       {
         "@type": "EducationalOrganization",
-        "@id": "https://dhiyonitutorials.com/#organization",
+        "@id": "https://www.dhiyonitutorials.com/#organization",
         "name": "DHIYONI Tutorials",
-        "url": "https://dhiyonitutorials.com",
-        "logo": "https://dhiyonitutorials.com/favicon.png",
+        "url": "https://www.dhiyonitutorials.com",
+        "logo": "https://www.dhiyonitutorials.com/favicon.png",
         "description": "Comprehensive online tuition for Grades 3 to 12. Personalized learning path across CBSE, ICSE, and State Boards.",
         "address": {
           "@type": "PostalAddress",
