@@ -23,6 +23,7 @@ import tutorSignupRoutes from './routes/tutorSignupRoutes.js';
 import newsletterRoutes from './routes/newsletterRoutes.js';
 import tutorRoutes from './routes/tutorRoutes.js';
 import feedbackRoutes from './routes/feedbackRoutes.js';
+import galleryRoutes from './routes/galleryRoutes.js';
 
 // Resolve directory paths in ES module
 const __filename = fileURLToPath(import.meta.url);
@@ -96,6 +97,7 @@ app.use('/api/tutor-signups', tutorSignupRoutes);
 app.use('/api/newsletters', newsletterRoutes);
 app.use('/api/tutors', tutorRoutes);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/gallery', galleryRoutes);
 
 // Base route
 app.get('/', (req, res) => {

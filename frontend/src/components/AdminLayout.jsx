@@ -17,6 +17,8 @@ export default function AdminLayout() {
   const [newsletters, setNewsletters] = useState([]);
   const [tutors, setTutors] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
+  const [galleries, setGalleries] = useState([]);
+  const [galleryFormData, setGalleryFormData] = useState({ url: '', alt: '', category: 'General' });
   
   // Modal & Edit States
   const [selectedItem, setSelectedItem] = useState(null);
@@ -90,13 +92,14 @@ export default function AdminLayout() {
     try {
       const headers = getHeaders();
       
-      const [resContacts, resParents, resTutorsSignup, resNews, resTutors, resFeedbacks] = await Promise.all([
+      const [resContacts, resParents, resTutorsSignup, resNews, resTutors, resFeedbacks, resGallery] = await Promise.all([
         fetch('/api/contacts', { headers }),
         fetch('/api/parent-signups', { headers }),
         fetch('/api/tutor-signups', { headers }),
         fetch('/api/newsletters', { headers }),
         fetch('/api/tutors'), // Public API
-        fetch('/api/feedback', { headers })
+        fetch('/api/feedback', { headers }),
+        fetch('/api/gallery')
       ]);
 
       if (resContacts.ok) setContacts(await resContacts.json());
@@ -104,6 +107,7 @@ export default function AdminLayout() {
       if (resTutorsSignup.ok) setTutorSignups(await resTutorsSignup.json());
       if (resNews.ok) setNewsletters(await resNews.json());
       if (resTutors.ok) setTutors(await resTutors.json());
+      if (resGallery.ok) setGalleries(await resGallery.json());
       if (resFeedbacks.ok) {
         const fbData = await resFeedbacks.json();
         setFeedbacks(fbData.data || []);
@@ -151,7 +155,8 @@ export default function AdminLayout() {
         contact: `/api/contacts/${id}`,
         newsletter: `/api/newsletters/${id}`,
         tutorProfile: `/api/tutors/${id}`,
-        feedback: `/api/feedback/${id}` // Added for feedback deletion if needed later
+        feedback: `/api/feedback/${id}`, // Added for feedback deletion if needed later
+        gallery: `/api/gallery/${id}`
       };
 
       const response = await fetch(urlMap[type], {
@@ -223,6 +228,29 @@ export default function AdminLayout() {
     });
     setSelectedItem(tutorItem);
     setModalType('edit-tutor');
+  };
+
+  const handleGallerySubmit = async (e) => {
+    e.preventDefault();
+    setFormMsg({ type: '', text: '' });
+    try {
+      const response = await fetch('/api/gallery', {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify(galleryFormData)
+      });
+      if (response.ok) {
+        setFormMsg({ type: 'success', text: 'Image added to gallery!' });
+        setGalleryFormData({ url: '', alt: '', category: 'General' });
+        fetchAllData();
+        setTimeout(() => setFormMsg({ type: '', text: '' }), 3000);
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Operation failed');
+      }
+    } catch (err) {
+      setFormMsg({ type: 'error', text: err.message });
+    }
   };
 
   // Change Password
@@ -318,6 +346,7 @@ export default function AdminLayout() {
               { id: 'feedbacks', label: 'Feedbacks', icon: 'forum', badge: 0 },
               { id: 'newsletters', label: 'Newsletter Subscribers', icon: 'campaign' },
               { id: 'tutorsCrud', label: 'Manage Tutors', icon: 'groups' },
+              { id: 'manageGallery', label: 'Manage Gallery', icon: 'photo_library' },
               { id: 'settings', label: 'Security Settings', icon: 'settings' }
             ].map(({ id, label, icon, badge }) => (
               <button
@@ -974,6 +1003,74 @@ export default function AdminLayout() {
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 8: MANAGE GALLERY */}
+          {activeTab === 'manageGallery' && (
+            <div className="space-y-6">
+              <div className="bg-white rounded-2xl border border-outline-variant/30 teal-shadow p-6 animate-fade-in">
+                <div className="border-b border-outline-variant/20 pb-4 mb-4">
+                  <h3 className="font-montserrat font-bold text-lg text-primary">Add New Image to Gallery</h3>
+                  <p className="font-inter text-xs text-on-surface-variant">Provide an image URL to show on the public gallery page and home screen.</p>
+                </div>
+                {formMsg.text && (
+                  <div className={`mb-4 p-4 border rounded-xl text-body-sm flex items-start gap-2 ${
+                    formMsg.type === 'success' ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-rose-50 border-rose-200 text-rose-800'
+                  }`}>
+                    <span className="material-symbols-outlined shrink-0 text-[20px]">
+                      {formMsg.type === 'success' ? 'check_circle' : 'error'}
+                    </span>
+                    <span>{formMsg.text}</span>
+                  </div>
+                )}
+                <form onSubmit={handleGallerySubmit} className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="md:col-span-2">
+                    <label className="font-inter text-body-sm font-bold text-on-surface block mb-1">Image URL *</label>
+                    <input
+                      type="url"
+                      required
+                      value={galleryFormData.url}
+                      onChange={(e) => setGalleryFormData({ ...galleryFormData, url: e.target.value })}
+                      placeholder="https://images.unsplash.com/..."
+                      className="w-full bg-[#F9F9F9] border border-outline-variant rounded-xl p-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-body-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="font-inter text-body-sm font-bold text-on-surface block mb-1">Category</label>
+                    <input
+                      type="text"
+                      value={galleryFormData.category}
+                      onChange={(e) => setGalleryFormData({ ...galleryFormData, category: e.target.value })}
+                      placeholder="Classroom"
+                      className="w-full bg-[#F9F9F9] border border-outline-variant rounded-xl p-3 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-body-sm"
+                    />
+                  </div>
+                  <div className="md:col-span-3 text-right">
+                    <button type="submit" className="bg-primary text-white font-montserrat font-bold py-2.5 px-6 rounded-xl hover:bg-primary-container transition-all shadow-md">
+                      Add to Gallery
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div className="bg-white rounded-2xl border border-outline-variant/30 teal-shadow p-6 animate-fade-in">
+                <h3 className="font-montserrat font-bold text-lg text-primary mb-4">Current Gallery</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {galleries.map(img => (
+                    <div key={img._id} className="relative group rounded-xl overflow-hidden aspect-square border border-outline-variant">
+                      <img src={img.url} alt={img.alt} className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-2">
+                        <span className="text-white text-xs font-bold">{img.category}</span>
+                        <button onClick={() => deleteItem('gallery', img._id)} className="bg-rose-600 text-white p-1 rounded hover:bg-rose-700 text-xs text-center">Delete</button>
+                      </div>
+                    </div>
+                  ))}
+                  {galleries.length === 0 && (
+                    <div className="col-span-full text-center py-8 text-on-surface-variant font-medium">No images in the gallery yet.</div>
+                  )}
+                </div>
               </div>
             </div>
           )}

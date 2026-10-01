@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import SEO from '../components/SEO'
-import grade3to5Img from '../assets/Grades 3-5.png'
+const grade3to5Img = "https://res.cloudinary.com/uzj6j4kh/image/upload/v1790882721/Grades_3-5.png";
 import grade6to12Img from '../assets/Grades 6-12.png'
 import iit1Img from '../assets/IIT-1.png'
 import iit2Img from '../assets/IIT-2.png'
@@ -50,6 +50,18 @@ export default function Home() {
   const [feedbackLoading, setFeedbackLoading] = useState(false)
   const [feedbackError, setFeedbackError] = useState('')
   const [feedbackSuccess, setFeedbackSuccess] = useState(false)
+  const [galleryPreview, setGalleryPreview] = useState([])
+
+  useEffect(() => {
+    fetch('/api/gallery')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setGalleryPreview(data.slice(0, 4));
+        }
+      })
+      .catch(err => console.error('Failed to load gallery preview:', err));
+  }, []);
 
   const handleFeedbackChange = (e) => {
     const { name, value } = e.target
@@ -529,21 +541,30 @@ export default function Home() {
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-            {[
-              "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800",
-              "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800",
-              "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800",
-              "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800"
-            ].map((src, idx) => (
-              <div key={idx} className="rounded-xl overflow-hidden aspect-[4/3] teal-shadow group">
-                <img 
-                  src={src} 
-                  alt="Gallery preview" 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  loading="lazy"
-                />
+            {galleryPreview.length > 0 ? (
+              galleryPreview.map((img) => (
+                <div key={img._id} className="rounded-xl overflow-hidden aspect-[4/3] teal-shadow group relative">
+                  <img 
+                    src={img.url} 
+                    alt={img.alt || "Gallery preview"} 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    loading="lazy"
+                    decoding="async"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = 'https://placehold.co/800x600/e2e8f0/64748b?text=Image+Unavailable';
+                    }}
+                  />
+                  <div className="absolute bottom-2 left-2 bg-black/60 px-2 py-0.5 rounded text-[10px] text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                    {img.category}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="col-span-4 py-8 text-on-surface-variant text-sm font-medium">
+                Gallery preview is empty. Add images from the admin panel.
               </div>
-            ))}
+            )}
           </div>
 
           <Link
