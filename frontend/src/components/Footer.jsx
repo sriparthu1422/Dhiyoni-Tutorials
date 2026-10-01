@@ -19,10 +19,10 @@ const courseLinks = [
 ]
 
 const legalLinks = [
-  { label: 'Privacy Policy', to: '#' },
-  { label: 'Terms of Service', to: '#' },
-  { label: 'FAQ', to: '#' },
-  { label: 'Support', to: '#' },
+  { label: 'Privacy Policy', to: '/privacy' },
+  { label: 'Terms of Service', to: '/terms' },
+  { label: 'FAQ', to: '/faq' },
+  { label: 'Support', to: '/contact' },
 ]
 
 export default function Footer() {
@@ -134,11 +134,11 @@ export default function Footer() {
           <div>
             <h4 className="font-montserrat font-semibold text-headline-md text-primary mb-4">Legal</h4>
             <ul className="space-y-2">
-              {legalLinks.map(({ label }) => (
+              {legalLinks.map(({ label, to }) => (
                 <li key={label}>
-                  <a href="#" className="text-on-surface-variant text-body-sm hover:text-primary transition-colors duration-200">
+                  <Link to={to} className="text-on-surface-variant text-body-sm hover:text-primary transition-colors duration-200">
                     {label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

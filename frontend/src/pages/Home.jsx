@@ -518,6 +518,44 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── GALLERY SNEAK PEEK ─────────────────────────────── */}
+      <section className="py-xl bg-white">
+        <div className="max-w-container-max mx-auto px-4 md:px-8 lg:px-12 text-center">
+          <h2 className="font-montserrat font-semibold text-headline-lg-mobile md:text-headline-lg text-primary mb-sm">
+            Inside DHIYONI
+          </h2>
+          <p className="font-inter text-on-surface-variant text-body-md max-w-2xl mx-auto mb-12">
+            A glimpse into our engaging learning environments and student success stories.
+          </p>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+            {[
+              "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800",
+              "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=800",
+              "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=800",
+              "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800"
+            ].map((src, idx) => (
+              <div key={idx} className="rounded-xl overflow-hidden aspect-[4/3] teal-shadow group">
+                <img 
+                  src={src} 
+                  alt="Gallery preview" 
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+
+          <Link
+            to="/gallery"
+            className="inline-flex items-center gap-2 font-bold px-8 py-3 border-2 border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors duration-300 shadow-sm"
+          >
+            <span>View Full Gallery</span>
+            <span className="material-symbols-outlined text-[20px]">photo_library</span>
+          </Link>
+        </div>
+      </section>
+
       {/* ── FEEDBACK SECTION ── */}
       <section className="bg-surface-container-low py-16 relative overflow-hidden">
         <div className="section-container">

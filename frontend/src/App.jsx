@@ -9,6 +9,10 @@ import Tutors from './pages/Tutors'
 import Contact from './pages/Contact'
 import ParentSignUp from './pages/ParentSignUp'
 import TutorSignUp from './pages/TutorSignUp'
+import Privacy from './pages/Privacy'
+import Terms from './pages/Terms'
+import FAQ from './pages/FAQ'
+import Gallery from './pages/Gallery'
 import ExitIntentModal from './components/ExitIntentModal'
 import AdminLogin from './pages/AdminLogin'
 import AdminLayout from './components/AdminLayout'
@@ -35,6 +39,10 @@ function Layout() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/parent-signup" element={<ParentSignUp />} />
           <Route path="/tutor-signup" element={<TutorSignUp />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/gallery" element={<Gallery />} />
         </Routes>
       </main>
       <Footer />
