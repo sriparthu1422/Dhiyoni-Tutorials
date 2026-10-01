@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import SEO from '../components/SEO'
 const grade3to5Img = "https://res.cloudinary.com/uzj6j4kh/image/upload/v1790882721/Grades_3-5.png";
-import grade6to12Img from '../assets/Grades 6-12.png'
-import iit1Img from '../assets/IIT-1.png'
-import iit2Img from '../assets/IIT-2.png'
-import languageImg from '../assets/Language.png'
-import extraImg from '../assets/extra.png'
+const grade6to12Img = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790883725/Grades_6-12.png';
+const iit1Img = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884356/IIT-1.png'
+const iit2Img = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884417/IIT-2.png'
+const languageImg = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884457/Language.png'
+const extraImg = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884690/extra-Cg8JGDFC.png'
 
 export default function Home() {
   const homeSchema = {
@@ -170,7 +170,7 @@ export default function Home() {
                 alt="A professional educator teaching with a whiteboard and laptop"
                 className="w-full aspect-square object-cover"
                 loading="lazy"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJJ1b4rt0nXTAVIYQsc4-jTTLN5ZGIJEyYwamloMaaKAGz-YssI4OFgV6SfLH7GDyfokEgNtCNhNabyfQtjmEJHSAEu8UYRqbelXsM9Ic1erz3YqSdkmdcygV0kyEpVF-QG8K55c5_biAvboQKUdMFyk2XymoTOgRQFRo4jOIzo6pXXZmFVXB3r7oA8FikytH5dEL-4VGgMB1qJDDhdCmZtielPgUbWhde9qe5NwPAAwH-T45TdUnJI6CFtqSCaP3d2WHIOSB-XYBp"
+                src="https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884185/A_professional_educator_teaching_with_a_whiteboard_and_laptop.jpg"
               />
             </div>
             {/* Decorative blobs */}

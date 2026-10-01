@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
 import { AnimatedSection } from '../components/shared'
 import SEO from '../components/SEO'
-import aboutHeroImg1 from '../assets/About_page_image_1.png'
-import aboutHeroImg2 from '../assets/About_page_image_2.png'
+const aboutHeroImg1 = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884839/About_page_image_1.png'
+const aboutHeroImg2 = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884838/About_page_image_2.png'
 
 function AnimatedCounter({ target, duration = 2000, suffix = '', formatter }) {
   const [count, setCount] = useState(0)

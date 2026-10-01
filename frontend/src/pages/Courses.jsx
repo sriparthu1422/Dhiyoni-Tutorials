@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import SEO from '../components/SEO'
-import student from '../assets/student.png'
-import student2 from '../assets/student2.png'
+const student = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884936/student.png'
+const student2 = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884934/student2.png'
 
 const filters = [
   { label: 'Grade 3-5', value: 'grade-3-5' },
