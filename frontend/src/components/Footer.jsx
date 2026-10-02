@@ -65,7 +65,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <Link to="/" aria-label="DHIYONI Tutorials Home" title="DHIYONI Tutorials">
+            <Link 
+              to="/" 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              aria-label="DHIYONI Tutorials Home" 
+              title="DHIYONI Tutorials"
+            >
               <img
                 src={logo}
                 alt="DHIYONI Tutorials"
