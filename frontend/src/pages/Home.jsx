@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import SEO from '../components/SEO'
 const grade3to5Img = "https://res.cloudinary.com/uzj6j4kh/image/upload/v1790882721/Grades_3-5.png";
 const grade6to12Img = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790883725/Grades_6-12.png';
-const iit1Img = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884356/IIT-1.png'
+const iit1Img = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884417/IIT-2.png'
 const iit2Img = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884417/IIT-2.png'
 const languageImg = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884457/Language.png'
 const extraImg = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884690/extra-Cg8JGDFC.png'
