@@ -530,7 +530,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── GALLERY SNEAK PEEK ─────────────────────────────── */}
+      {/* ── GALLERY SNEAK PEEK ───────────────────────────────
       <section className="py-xl bg-white">
         <div className="max-w-container-max mx-auto px-4 md:px-8 lg:px-12 text-center">
           <h2 className="font-montserrat font-semibold text-headline-lg-mobile md:text-headline-lg text-primary mb-sm">
@@ -575,7 +575,7 @@ export default function Home() {
             <span className="material-symbols-outlined text-[20px]">photo_library</span>
           </Link>
         </div>
-      </section>
+      </section> */}
 
       {/* ── FEEDBACK SECTION ── */}
       <section className="bg-surface-container-low py-16 relative overflow-hidden">
