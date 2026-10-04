@@ -16,7 +16,7 @@ const faqs = [
   },
   {
     question: "Are the classes online or offline?",
-    answer: "We offer both online and offline (home tuition) options depending on your location and preference. You can specify this during registration."
+    answer: "We offer online classes depending on your location and preference. You can specify this during registration."
   },
   {
     question: "What is the fee structure?",
