@@ -59,6 +59,15 @@ graph TD
 - **Communications:** Nodemailer SMTP email automation notifying management upon new parent and tutor registrations
 - **Logging:** Morgan HTTP request logger
 
+### 🔍 Search Engine Optimization (SEO) & Indexing Engine
+
+- **Metadata Architecture:** Powered by `react-helmet-async` with automated route detection, OpenGraph preview cards, Twitter cards, and Schema.org JSON-LD structured data (`WebSite` + `EducationalOrganization`).
+- **Canonical Normalization:** Strict route-aware canonicalization via `SEO.jsx` (strips trailing slashes on sub-paths, cleans URL parameters/hashes, standardizes the root domain).
+- **Search Intent Alignment:** Targeted keyword positioning for high-intent queries: **"Online Tuitions"** and **"Offline Tuitions"** across primary landing pages.
+- **Crawl Architecture:** Production `robots.txt` disallows private administrative routes (`/admin/`, `/api/`) while ensuring full public crawlability.
+- **Sitemap Coverage:** Valid XML sitemap (`/sitemap.xml`) indexing all 11 public indexable pages with synchronized timestamps.
+- **Local SEO & Google Business Profile:** Address and contact synchronization for Hyderabad locality searches and Google Maps 3-Pack visibility.
+
 ---
 
 ## 📋 Comprehensive Page-by-Page Project Audit
@@ -70,11 +79,12 @@ Below is a detailed breakdown of each public and administrative module in the ap
 ### 1. 🏠 Home Page (`/`)
 
 - **Live URL:** [dhiyonitutorials.com](https://www.dhiyonitutorials.com/)
-- **Target Audience:** Prospective parents, students looking for specialized home/online tuition, and potential tutors.
+- **SEO Title:** `Online & Offline Tuitions | Dhiyoni Tutorials`
+- **Target Audience:** Prospective parents and students looking for specialized online tuition or in-person classroom tuition for school curricula.
 - **Key Modules:**
-  - **Hero Value Proposition:** High-impact heading _"Empowering Minds, Shaping Futures"_, verified 4.6/5 rating badge, and prominent action buttons for Parent Sign-Up and Tutor Sign-Up.
-  - **Why Choose DHIYONI:** Pillars highlighting top 1% vetted educators, individualized pacing, and interactive whiteboard tools.
-  - **Curriculum Overview:** Grade 3–5 foundational skills, Grade 6–12 board mastery, and IIT-JEE/NEET foundation courses.
+  - **Hero Value Proposition:** High-impact H1 heading _"Online & Offline Tuitions for School Students"_, verified 4.6/5 rating badge, and prominent action buttons for Parent Sign-Up and Tutor Sign-Up.
+  - **Dual-Delivery Model:** Dedicated feature pillars for **Online Tuition Classes** (virtual whiteboard tools, live recorded sessions) and **Offline Tuition Classes** (focused classroom mentorship, structured study discipline).
+  - **Curriculum Overview:** Grade 3–5 foundational skills, Grade 6–12 board mastery (CBSE, ICSE, State Boards), and competitive IIT-JEE/NEET foundation coaching.
   - **Dynamic Gallery Strip:** Live gallery showcase fetched directly from MongoDB.
   - **Verified Testimonials:** Real feedback from students and parents.
   - **Exit-Intent Modal:** Detects mouse departure from window and triggers a conversion-focused counseling prompt.
@@ -90,10 +100,11 @@ _Figure 2: Complete Home page flow showcasing curriculum highlights, why-choose 
 ### 2. 📖 About Us (`/about`)
 
 - **Live URL:** [dhiyonitutorials.com/about](https://www.dhiyonitutorials.com/about)
-- **Target Audience:** Parents evaluating institutional credibility and pedagogical philosophy.
+- **SEO Title:** `About Us | Online & Offline Tuition Classes | Dhiyoni Tutorials`
+- **Target Audience:** Parents evaluating institutional credibility, educator quality, and pedagogical philosophy.
 - **Key Modules:**
   - **Our Journey:** Chronicling the foundation in Hyderabad, expanding across CBSE, ICSE, and State curricula with a 98% academic success rate.
-  - **Our Mission & Vision:** Democratizing personalized mentorship and supplementary tutoring.
+  - **Our Mission & Vision:** Democratizing personalized mentorship, interactive live online learning, and structured in-person tuition.
   - **Academic Heritage:** "15+ Years Academic Excellence" accreditation showcase.
   - **Consultation Call to Action:** Direct WhatsApp counseling trigger.
 
@@ -102,18 +113,19 @@ _Figure 3: About Us page illustrating core values, organizational milestones, an
 
 ---
 
-### 3. 📚 Courses & Programs Directory (`/courses`)
+### 3. 📚 Courses & Academic Programs (`/courses`)
 
 - **Live URL:** [dhiyonitutorials.com/courses](https://www.dhiyonitutorials.com/courses)
-- **Target Audience:** Parents exploring subject-specific syllabi and competitive examination packages.
+- **SEO Title:** `Tuition Classes & Academic Programs | Dhiyoni Tutorials`
+- **Target Audience:** Parents exploring subject-specific syllabi, board exam coaching, and competitive examination packages across online and offline formats.
 - **Key Modules:**
   - **Categorized Tabs:**
     1. **Grade 3–5 (Primary):** Core conceptual understanding in Math, Science, and English.
     2. **Grade 6–10 (Secondary):** Rigorous board exam preparation (CBSE, ICSE, State Boards).
     3. **IIT / NEET Foundation:** Early analytical problem solving for Grades 8–10.
     4. **IIT / NEET Advanced Coaching:** Specialized physics, chemistry, mathematics, and biology coaching for Grades 11–12.
-    5. **Language & Skill Development:** Spoken English, Hindi, Vedic Math, and beginner Coding.
-  - **Program Highlights Card:** Interactive breakdown of revision sessions, personalized attention, and homework assistance.
+    5. **Language & Skill Development:** Spoken English, Hindi, Telugu, French, Vedic Math, and beginner Coding.
+  - **Program Highlights Card:** Interactive breakdown of revision sessions, personalized attention, concept-focused tuition, and homework assistance.
 
 ![Courses Page](./screenshots/04_courses_page.png)
 _Figure 4: Dynamic Courses page displaying comprehensive multi-tier academic curricula._
@@ -151,14 +163,15 @@ _Figure 6: Community photo gallery celebrating student milestones and classroom 
 ### 6. 📞 Contact & Admissions Office (`/contact`)
 
 - **Live URL:** [dhiyonitutorials.com/contact](https://www.dhiyonitutorials.com/contact)
-- **Target Audience:** Families seeking direct assistance, offline consultation, or location details.
+- **SEO Title:** `Tuition Enquiries & Contact | Dhiyoni Tutorials`
+- **Target Audience:** Families seeking direct assistance, online and offline tuition consultation, or centre location details.
 - **Key Modules:**
   - **Dual-Channel Submission:** Submits contact form data to MongoDB (`/api/contacts`) and automatically builds a pre-formatted WhatsApp chat dispatch.
   - **Admissions Details:**
-    - **Address:** Flat no: 204, 3rd floor, Sigma Sarovar, Bandam kommu, Ameenpur Road, 502032, Hyderabad, India.
+    - **Address:** Flat no: 204, 3rd floor, Sigma Sarovar, Bandam kommu, Ameenpur Road, Hyderabad, Telangana 502032 (Administrative office & in-person tuition counselling).
     - **Phone:** +91 79010 34846
     - **Email:** `dhiyonitutorials@gmail.com`
-  - **Satellite Location Map:** Embedded geolocation map for walk-in parent counseling.
+  - **Satellite Location Map:** Embedded geolocation map for walk-in parent counseling at Sigma Sarovar.
   - **Common FAQ Accordion:** Instant answers to common questions about tutor selection, homework help, and scheduling.
 
 ![Contact Us Page](./screenshots/07_contact_page.png)
@@ -380,7 +393,7 @@ EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_app_password
 EMAIL_FROM=your_email@gmail.com
 ADMIN_EMAIL=admin@dhiyoni.com
-ADMIN_PASSWORD=DhiyoniAdmin2026!
+ADMIN_PASSWORD=your_secure_admin_password
 EMAIL_TO=your_notifications_email@gmail.com
 ```
 
