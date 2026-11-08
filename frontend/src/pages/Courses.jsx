@@ -412,15 +412,19 @@ function CourseCard({ course }) {
   )
 }
 
+const IMAGES = [student, student2]
+
 export default function Courses() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [activeFilter, setActiveFilter] = useState(searchParams.get('filter') || 'grade-3-5')
+  const [internalFilter, setInternalFilter] = useState('grade-3-5')
   
+  const filterParam = searchParams.get('filter')
+  const activeFilter = (filterParam && filters.some(f => f.value === filterParam)) ? filterParam : internalFilter
+
   const containerRef = useRef(null)
   const buttonRefs = useRef({})
 
   // Auto-rotating Image Carousel
-  const IMAGES = [student, student2]
   const [currentImageIdx, setCurrentImageIdx] = useState(0)
 
   useEffect(() => {
@@ -429,13 +433,6 @@ export default function Courses() {
     }, 3000)
     return () => clearInterval(timer)
   }, [])
-
-  useEffect(() => {
-    const filterParam = searchParams.get('filter')
-    if (filterParam && filters.some(f => f.value === filterParam)) {
-      setActiveFilter(filterParam)
-    }
-  }, [searchParams])
 
   // Scroll active filter into view
   useEffect(() => {
@@ -457,7 +454,7 @@ export default function Courses() {
   }, [activeFilter])
 
   const handleFilterChange = (filterVal) => {
-    setActiveFilter(filterVal)
+    setInternalFilter(filterVal)
     setSearchParams({ filter: filterVal })
   }
 

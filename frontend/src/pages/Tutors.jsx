@@ -42,7 +42,6 @@ const tutors = [
 
 export default function Tutors() {
   const [tutorsList, setTutorsList] = useState([])
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchTutors = async () => {
@@ -61,8 +60,6 @@ export default function Tutors() {
       } catch (err) {
         console.error('Failed to fetch tutors from backend:', err)
         setTutorsList(tutors)
-      } finally {
-        setLoading(false)
       }
     }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 import SEO from '../components/SEO'
 
 const inputClass =
@@ -31,14 +31,14 @@ export default function TutorSignup() {
         const email = fData.get('email')?.trim()
         if (!email) {
           newErrors['email'] = 'Email Address is required'
-        } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        } else if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
           newErrors['email'] = 'Please enter a valid email address'
         }
 
         const contact = fData.get('contact')?.trim()
         if (!contact) {
           newErrors['contact'] = 'Phone Number is required'
-        } else if (!/^\+?[\d\s\-]{8,15}$/.test(contact)) {
+        } else if (!/^\+?[\d\s-]{8,15}$/.test(contact)) {
           newErrors['contact'] = 'Please enter a valid phone number (8-15 digits)'
         }
 

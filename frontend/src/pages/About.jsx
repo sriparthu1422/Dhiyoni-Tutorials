@@ -67,8 +67,9 @@ function AnimatedCounter({ target, duration = 2000, suffix = '', formatter }) {
   )
 }
 
+const HERO_IMAGES = [aboutHeroImg1, aboutHeroImg2]
+
 export default function About() {
-  const HERO_IMAGES = [aboutHeroImg1, aboutHeroImg2]
   const [currentImageIdx, setCurrentImageIdx] = useState(0)
 
   useEffect(() => {

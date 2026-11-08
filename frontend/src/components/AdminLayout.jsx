@@ -7,7 +7,14 @@ export default function AdminLayout() {
 
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'overview');
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [user, setUser] = useState(null);
+  const [user] = useState(() => {
+    try {
+      const localUser = localStorage.getItem('dhiyoni_admin_user');
+      return localUser ? JSON.parse(localUser) : null;
+    } catch {
+      return null;
+    }
+  });
   const [loading, setLoading] = useState(true);
 
   // Dashboard Data States
@@ -31,51 +38,6 @@ export default function AdminLayout() {
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
   const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || 'all');
   const [gradeFilter, setGradeFilter] = useState(searchParams.get('grade') || 'all');
-
-  // Sync state to URL
-  useEffect(() => {
-    const params = new URLSearchParams();
-    if (activeTab !== 'overview') params.set('tab', activeTab);
-    if (searchQuery) params.set('search', searchQuery);
-    if (statusFilter !== 'all') params.set('status', statusFilter);
-    if (gradeFilter !== 'all') params.set('grade', gradeFilter);
-    setSearchParams(params, { replace: true });
-  }, [activeTab, searchQuery, statusFilter, gradeFilter, setSearchParams]);
-
-  useEffect(() => {
-    document.title = 'Admin Dashboard | DHIYONI Tutorials';
-    
-    // 1. Authenticate Guard
-    const token = localStorage.getItem('dhiyoni_admin_token');
-    const localUser = localStorage.getItem('dhiyoni_admin_user');
-    
-    if (!token || !localUser) {
-      handleLogout();
-      return;
-    }
-
-    setUser(JSON.parse(localUser));
-
-    // Verify token validity with backend
-    fetch('/api/auth/profile', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-    .then(res => {
-      if (!res.ok) throw new Error('Session expired');
-      return res.json();
-    })
-    .then(data => {
-      setLoading(false);
-      // Fetch initial data
-      fetchAllData();
-    })
-    .catch(err => {
-      console.error(err);
-      handleLogout();
-    });
-  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('dhiyoni_admin_token');
@@ -116,6 +78,50 @@ export default function AdminLayout() {
       console.error('Failed to load dashboard data:', error);
     }
   };
+
+  // Sync state to URL
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (activeTab !== 'overview') params.set('tab', activeTab);
+    if (searchQuery) params.set('search', searchQuery);
+    if (statusFilter !== 'all') params.set('status', statusFilter);
+    if (gradeFilter !== 'all') params.set('grade', gradeFilter);
+    setSearchParams(params, { replace: true });
+  }, [activeTab, searchQuery, statusFilter, gradeFilter, setSearchParams]);
+
+  useEffect(() => {
+    document.title = 'Admin Dashboard | DHIYONI Tutorials';
+    
+    // 1. Authenticate Guard
+    const token = localStorage.getItem('dhiyoni_admin_token');
+    const localUser = localStorage.getItem('dhiyoni_admin_user');
+    
+    if (!token || !localUser) {
+      handleLogout();
+      return;
+    }
+
+    // Verify token validity with backend
+    fetch('/api/auth/profile', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('Session expired');
+      return res.json();
+    })
+    .then(() => {
+      setLoading(false);
+      // Fetch initial data
+      fetchAllData();
+    })
+    .catch(err => {
+      console.error(err);
+      handleLogout();
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Submission Status Updates
   const updateStatus = async (type, id, status) => {
@@ -461,7 +467,7 @@ export default function AdminLayout() {
                     ]
                       .sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt))
                       .slice(0, 10)
-                      .map((item, idx) => (
+                      .map((item) => (
                         <div key={item._id} className="py-4 flex items-center justify-between flex-wrap gap-2 hover:bg-slate-50/50 px-2 rounded-xl transition-colors">
                           <div className="flex items-center gap-4">
                             <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${

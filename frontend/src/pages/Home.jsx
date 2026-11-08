@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import SEO from '../components/SEO'
 const grade3to5Img = "https://res.cloudinary.com/uzj6j4kh/image/upload/v1790882721/Grades_3-5.png";
@@ -50,8 +50,9 @@ export default function Home() {
   const [feedbackLoading, setFeedbackLoading] = useState(false)
   const [feedbackError, setFeedbackError] = useState('')
   const [feedbackSuccess, setFeedbackSuccess] = useState(false)
-  const [galleryPreview, setGalleryPreview] = useState([])
 
+  /* Retained for Gallery Sneak Peek when re-enabled:
+  const [galleryPreview, setGalleryPreview] = useState([])
   useEffect(() => {
     fetch('/api/gallery')
       .then(res => res.json())
@@ -62,6 +63,7 @@ export default function Home() {
       })
       .catch(err => console.error('Failed to load gallery preview:', err));
   }, []);
+  */
 
   const handleFeedbackChange = (e) => {
     const { name, value } = e.target
@@ -115,10 +117,15 @@ export default function Home() {
 
   return (
     <div className="page-transition">
+      {/* 
+        Retained Previous SEO Metadata:
+        - Previous Title: "DHIYONI Tutorials | Personalized Learning for Academic Excellence"
+        - Previous Description: "DHIYONI Tutorials provides comprehensive online tuition for Grades 3 to 12. Personalized learning across CBSE, ICSE, and State Boards with expert educators."
+      */}
       <SEO 
-        title="DHIYONI Tutorials | Personalized Learning for Academic Excellence"
-        description="DHIYONI Tutorials provides comprehensive online tuition for Grades 3 to 12. Personalized learning across CBSE, ICSE, and State Boards with expert educators."
-        keywords="Dhiyoni Tutorials, online tuition, CBSE coaching, ICSE tuition, IIT NEET Foundation, expert tutors India"
+        title="Online Tuitions & Tuition Classes | Dhiyoni Tutorials | Personalized Learning for Academic Excellence"
+        description="Explore online tuitions with Dhiyoni Tutorials. Personalized tutoring for school students across academic subjects. Contact us for classes and admissions. Comprehensive online tuition for Grades 3 to 12 with expert educators across CBSE, ICSE, and State Boards."
+        keywords="Online Tuitions, Tuition Classes, Dhiyoni Tutorials, personalized tutoring, school tutoring, CBSE coaching, ICSE tuition, IIT NEET Foundation, expert tutors India"
         canonicalPath="/"
         schema={homeSchema}
       />

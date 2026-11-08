@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import SEO from '../components/SEO'
 
 const inputClass =
@@ -31,14 +31,14 @@ export default function ParentSignup() {
     const contact = formData.get('contact')?.trim()
     if (!contact) {
       newErrors.contact = 'Contact Number is required'
-    } else if (!/^\+?[\d\s\-]{8,15}$/.test(contact)) {
+    } else if (!/^\+?[\d\s-]{8,15}$/.test(contact)) {
       newErrors.contact = 'Please enter a valid contact number (8-15 digits)'
     }
 
     const email = formData.get('email')?.trim()
     if (!email) {
       newErrors.email = 'Email ID is required'
-    } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    } else if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       newErrors.email = 'Please enter a valid email address'
     }
 

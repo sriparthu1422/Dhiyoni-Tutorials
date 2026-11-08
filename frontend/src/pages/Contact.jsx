@@ -1,7 +1,6 @@
-import { useEffect, useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 import SEO from '../components/SEO'
-import logo from '../assets/logo.png'
-import map from '../assets/map.png' 
+import logo from '../assets/logo.png' 
 
 const faqs = [
   {

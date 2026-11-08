@@ -10,14 +10,6 @@ const quickLinks = [
   { to: '/contact', label: 'Contact' },
 ]
 
-const courseLinks = [
-  { label: 'CBSE Courses', to: '/courses' },
-  { label: 'ICSE Courses', to: '/courses' },
-  { label: 'State Boards', to: '/courses' },
-  { label: 'IIT/NEET Foundation', to: '/courses' },
-  { label: 'Language Excellence', to: '/courses' },
-]
-
 const legalLinks = [
   { label: 'Privacy Policy', to: '/privacy' },
   { label: 'Terms of Service', to: '/terms' },
