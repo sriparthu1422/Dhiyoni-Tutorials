@@ -21,9 +21,9 @@
 
 ---
 
-## 🔑 Demo & Admin Credentials
+<!--## 🔑 Demo & Admin Credentials
 
-<!-- To inspect and test the back-office administration capabilities, utilize the pre-configured administrative credentials:
+ To inspect and test the back-office administration capabilities, utilize the pre-configured administrative credentials:
 
 - **Admin Login URL:** [https://www.dhiyonitutorials.com/admin/login](https://www.dhiyonitutorials.com/admin/login)
 - **Admin Email:** `admin@dhiyoni.com`
