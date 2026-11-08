@@ -99,9 +99,8 @@ export default function Contact() {
   return (
     <div className="page-transition">
       <SEO 
-        title="Contact Us | Start Your Learning Journey | DHIYONI Tutorials"
-        description="Get in touch with DHIYONI Tutorials. Fill out our contact form, find our location on the map, or check out our FAQs to learn more about our online classes."
-        keywords="Contact Dhiyoni Tutorials, online tuition enquiry, tutoring services Hyderabad, education contact"
+        title="Tuition Enquiries & Contact | Dhiyoni Tutorials"
+        description="Get in touch with DHIYONI Tutorials for online and offline tuition enquiries. Find our Hyderabad centre address, contact details, or submit an admission inquiry."
         canonicalPath="/contact"
       />
       <main className="max-w-container-max mx-auto px-4 md:px-lg py-lg">
@@ -109,10 +108,10 @@ export default function Contact() {
         {/* ── HERO SECTION ─────────────────────────────────────── */}
         <section className="text-center mb-xl">
           <h1 className="font-montserrat font-bold text-[2rem] md:text-headline-lg lg:text-display-lg text-primary mb-md">
-            Get in Touch
+            Tuition Enquiries &amp; Contact
           </h1>
           <p className="font-inter text-body-md md:text-body-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
-            Have questions about our CBSE, ICSE, or State Board programs? Our academic counselors are here to help you navigate your child's educational journey.
+            Have questions about our online tuitions or offline tuition classes across CBSE, ICSE, and State Boards? Our academic counselors are here to help you navigate your child's educational journey.
           </p>
         </section>
 
@@ -191,7 +190,10 @@ export default function Contact() {
                 <div>
                   <h4 className="font-inter text-body-md font-bold text-primary">Office Address</h4>
                   <p className="font-inter text-body-xs text-on-surface-variant">
-                    Flat no: 204, 3rd floor, Sigma Sarovar, Bandam kommu, Ameenpur Road, 502032
+                    Flat no: 204, 3rd floor, Sigma Sarovar, Bandam kommu, Ameenpur Road, Hyderabad, Telangana 502032
+                  </p>
+                  <p className="font-inter text-[11px] text-primary/80 font-medium mt-1">
+                    (Administrative office &amp; in-person tuition counselling)
                   </p>
                 </div>
               </div>

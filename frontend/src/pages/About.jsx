@@ -82,9 +82,8 @@ export default function About() {
   return (
     <div className="page-transition">
       <SEO 
-        title="About Us | DHIYONI Tutorials - 15+ Years of Excellence"
-        description="Learn about DHIYONI Tutorials, our mission to democratize high-quality education, and our 15+ years of academic excellence and 98% success rate."
-        keywords="About Dhiyoni, Academic Excellence, Holistic Education, online tuition India, educational hub"
+        title="About Us | Online & Offline Tuition Classes | Dhiyoni Tutorials"
+        description="Learn about Dhiyoni Tutorials and our commitment to academic excellence. We offer personalized online and offline tuition classes for school students across CBSE, ICSE, and State Boards."
         canonicalPath="/about"
       />
 
@@ -98,7 +97,7 @@ export default function About() {
               <span className="text-secondary">Shaping Futures</span>
             </h1>
             <p className="font-inter text-body-md lg:text-body-lg text-on-surface-variant mb-lg">
-              DHIYONI Tutorials is a premier educational institution dedicated to providing personalized coaching and holistic development for students across various curriculum frameworks.
+              DHIYONI Tutorials is a premier educational institution dedicated to providing personalized online and offline tuition classes, academic coaching, and holistic development for students across CBSE, ICSE, and State Boards.
             </p>
             <div className="flex items-center justify-center lg:justify-start gap-base">
               <span
@@ -119,7 +118,7 @@ export default function About() {
               {HERO_IMAGES.map((img, index) => (
                 <img
                   key={index}
-                  alt="Our Team"
+                  alt="Dhiyoni Tutorials educators and academic mentors"
                   className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
                     currentImageIdx === index ? 'opacity-100 z-10' : 'opacity-0 z-0'
                   }`}

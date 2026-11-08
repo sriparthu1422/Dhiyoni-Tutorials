@@ -416,15 +416,13 @@ const IMAGES = [student, student2]
 
 export default function Courses() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [internalFilter, setInternalFilter] = useState('grade-3-5')
-  
   const filterParam = searchParams.get('filter')
-  const activeFilter = (filterParam && filters.some(f => f.value === filterParam)) ? filterParam : internalFilter
-
+  const [selectedFilter, setSelectedFilter] = useState('grade-3-5')
+  const activeFilter = (filterParam && filters.some(f => f.value === filterParam)) ? filterParam : selectedFilter
+  
   const containerRef = useRef(null)
   const buttonRefs = useRef({})
 
-  // Auto-rotating Image Carousel
   const [currentImageIdx, setCurrentImageIdx] = useState(0)
 
   useEffect(() => {
@@ -454,7 +452,7 @@ export default function Courses() {
   }, [activeFilter])
 
   const handleFilterChange = (filterVal) => {
-    setInternalFilter(filterVal)
+    setSelectedFilter(filterVal)
     setSearchParams({ filter: filterVal })
   }
 
@@ -467,9 +465,8 @@ export default function Courses() {
   return (
     <div className="page-transition">
       <SEO 
-        title="Explore Courses & Programs | DHIYONI Tutorials"
-        description="Browse our comprehensive list of online tuition programs, foundation courses, coding classes, and extracurricular activities for students of all grades."
-        keywords="online courses, CBSE tuition, ICSE tuition, IIT foundation, NEET coaching, online coding classes, vedic math, Dhiyoni Tutorials"
+        title="Tuition Classes & Academic Programs | Dhiyoni Tutorials"
+        description="Explore tuition classes and academic programs at Dhiyoni Tutorials. Find available subjects, grade-level support and online or in-person learning options."
         canonicalPath="/courses"
       />
       <main className="max-w-container-max mx-auto px-4 md:px-lg py-md md:py-lg">
@@ -480,10 +477,10 @@ export default function Courses() {
             {/* Left Content */}
             <div className="lg:w-7/12 py-4 md:py-6 lg:py-12 z-10 flex flex-col justify-center">
               <h1 className="font-montserrat font-bold text-display-lg-mobile md:text-display-lg text-white mb-2 lg:mb-6 leading-tight">
-                Master Your Future
+                Tuition Classes &amp; Academic Programs
               </h1>
               <p className="font-inter text-body-md md:text-body-lg text-white/90 mb-3 lg:mb-10 max-w-xl leading-relaxed">
-                Expert-led courses designed for academic excellence. From foundational primary education to competitive IIT &amp; NEET coaching, DHIYONI empowers every learner.
+                Expert-led tuition classes and academic programs designed for school excellence. From foundational primary school tuition to comprehensive board prep and competitive IIT-JEE &amp; NEET coaching, explore flexible online and offline learning options.
               </p>
               
               {/* Feature Grid */}
@@ -493,16 +490,16 @@ export default function Courses() {
                   <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white mb-3 border border-white/20 shrink-0 shadow-sm">
                     <span className="material-symbols-outlined text-[24px]">menu_book</span>
                   </div>
-                  <h4 className="font-montserrat font-bold text-body-md text-white mb-1">Concept-Focused Learning</h4>
-                  <p className="font-inter text-body-sm text-white/80">Strong foundation with clear concepts.</p>
+                  <h4 className="font-montserrat font-bold text-body-md text-white mb-1">Concept-Focused Tuition</h4>
+                  <p className="font-inter text-body-sm text-white/80">Strong foundation with clear concepts in school subjects.</p>
                 </div>
                 {/* Feature 2 */}
                 <div className="flex flex-col">
                   <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white mb-3 border border-white/20 shrink-0 shadow-sm">
                     <span className="material-symbols-outlined text-[24px]">track_changes</span>
                   </div>
-                  <h4 className="font-montserrat font-bold text-body-md text-white mb-1">Expert Guidance</h4>
-                  <p className="font-inter text-body-sm text-white/80">Learn from qualified and experienced educators.</p>
+                  <h4 className="font-montserrat font-bold text-body-md text-white mb-1">Online &amp; In-Person Learning</h4>
+                  <p className="font-inter text-body-sm text-white/80">Learn from qualified educators through interactive classes.</p>
                 </div>
                 {/* Feature 3 */}
                 <div className="flex flex-col">
@@ -510,7 +507,7 @@ export default function Courses() {
                     <span className="material-symbols-outlined text-[24px]">school</span>
                   </div>
                   <h4 className="font-montserrat font-bold text-body-md text-white mb-1">Academic Excellence</h4>
-                  <p className="font-inter text-body-sm text-white/80">Structured courses that deliver results.</p>
+                  <p className="font-inter text-body-sm text-white/80">Structured tuition classes that deliver proven results.</p>
                 </div>
               </div>
             </div>
@@ -537,7 +534,7 @@ export default function Courses() {
                 {IMAGES.map((img, index) => (
                   <img
                     key={index}
-                    alt="Master Your Future at DHIYONI Tutorials"
+                    alt="Students learning in tuition classes and academic programs at Dhiyoni Tutorials"
                     className={`absolute bottom-0 h-full w-auto object-contain object-bottom select-none pointer-events-none transition-opacity duration-1000 ease-in-out ${
                       currentImageIdx === index ? 'opacity-100 z-10' : 'opacity-0 z-0'
                     }`}

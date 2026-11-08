@@ -15,9 +15,9 @@ export default function Home() {
       {
         "@type": "WebSite",
         "@id": "https://www.dhiyonitutorials.com/#website",
-        "url": "https://www.dhiyonitutorials.com",
-        "name": "DHIYONI Tutorials",
-        "description": "Personalized Learning for Academic Excellence",
+        "url": "https://www.dhiyonitutorials.com/",
+        "name": "Dhiyoni Tutorials",
+        "description": "Online and Offline Tuitions for School Students",
         "publisher": {
           "@id": "https://www.dhiyonitutorials.com/#organization"
         }
@@ -25,15 +25,24 @@ export default function Home() {
       {
         "@type": "EducationalOrganization",
         "@id": "https://www.dhiyonitutorials.com/#organization",
-        "name": "DHIYONI Tutorials",
-        "url": "https://www.dhiyonitutorials.com",
+        "name": "Dhiyoni Tutorials",
+        "url": "https://www.dhiyonitutorials.com/",
         "logo": "https://www.dhiyonitutorials.com/favicon.png",
-        "description": "Comprehensive online tuition for Grades 3 to 12. Personalized learning path across CBSE, ICSE, and State Boards.",
+        "description": "Dhiyoni Tutorials provides online and offline tuitions for school students in Grades 3 to 12 across CBSE, ICSE, and State Boards.",
         "address": {
           "@type": "PostalAddress",
+          "streetAddress": "Flat no: 204, 3rd floor, Sigma Sarovar, Bandam kommu, Ameenpur Road",
           "addressLocality": "Hyderabad",
+          "postalCode": "502032",
+          "addressRegion": "Telangana",
           "addressCountry": "IN"
-        }
+        },
+        "sameAs": [
+          "https://www.instagram.com/dhiyonitutorials",
+          "https://www.facebook.com/profile.php?id=61580085693158",
+          "https://www.youtube.com/@DhiyoniTutorials",
+          "https://www.linkedin.com/company/132004109"
+        ]
       }
     ]
   };
@@ -117,15 +126,9 @@ export default function Home() {
 
   return (
     <div className="page-transition">
-      {/* 
-        Retained Previous SEO Metadata:
-        - Previous Title: "DHIYONI Tutorials | Personalized Learning for Academic Excellence"
-        - Previous Description: "DHIYONI Tutorials provides comprehensive online tuition for Grades 3 to 12. Personalized learning across CBSE, ICSE, and State Boards with expert educators."
-      */}
       <SEO 
-        title="Online Tuitions & Tuition Classes | Dhiyoni Tutorials | Personalized Learning for Academic Excellence"
-        description="Explore online tuitions with Dhiyoni Tutorials. Personalized tutoring for school students across academic subjects. Contact us for classes and admissions. Comprehensive online tuition for Grades 3 to 12 with expert educators across CBSE, ICSE, and State Boards."
-        keywords="Online Tuitions, Tuition Classes, Dhiyoni Tutorials, personalized tutoring, school tutoring, CBSE coaching, ICSE tuition, IIT NEET Foundation, expert tutors India"
+        title="Online & Offline Tuitions | Dhiyoni Tutorials"
+        description="Dhiyoni Tutorials offers online and offline tuitions for school students. Explore personalized academic support, available subjects and classes. Enquire today."
         canonicalPath="/"
         schema={homeSchema}
       />
@@ -137,14 +140,14 @@ export default function Home() {
           {/* Left: Text — order-2 on mobile, order-1 on desktop */}
           <div className="z-10 order-2 lg:order-1 mt-8 lg:mt-0 text-center lg:text-left">
             <span className="inline-block bg-tertiary-fixed text-primary px-sm py-xs rounded-full font-montserrat text-label-md mb-md">
-              ONLINE EDUCATION REDEFINED
+              ONLINE &amp; OFFLINE TUITIONS
             </span>
             <h1 className="font-montserrat font-bold text-display-lg-mobile lg:text-display-lg text-primary mb-md leading-tight">
-              DHIYONI Tutorials: <br className="hidden sm:block" /> Empowering Minds, <br className="hidden sm:block" />{' '}
-              <span style={{ color: 'rgb(240, 90, 40)' }}>Shaping Futures</span>
+              Online &amp; Offline Tuitions <br className="hidden sm:block" />{' '}
+              <span style={{ color: 'rgb(240, 90, 40)' }}>for School Students</span>
             </h1>
             <p className="font-inter text-body-md lg:text-body-lg text-on-surface-variant mb-lg max-w-xl mx-auto lg:mx-0">
-              Comprehensive online tuition for Grades 3 to 12. Personalized learning path across CBSE, ICSE, and State Boards with expert educators who care about your child's success.
+              Dhiyoni Tutorials provides online and offline tuitions for school students through personalized academic support, live online learning sessions, and in-person tuition classes. Our teaching approach focuses on strengthening subject knowledge, improving conceptual understanding, and helping students build confidence in their studies.
             </p>
 
             {/* Feature badges */}
@@ -174,7 +177,7 @@ export default function Home() {
           <div className="relative order-1 lg:order-2 max-w-[500px] mx-auto lg:ml-auto lg:mr-0 w-full">
             <div className="relative z-10 rounded-3xl overflow-hidden teal-shadow">
               <img
-                alt="A professional educator teaching with a whiteboard and laptop"
+                alt="Professional educator conducting online and offline tuition class"
                 className="w-full aspect-square object-cover"
                 loading="lazy"
                 src="https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884185/A_professional_educator_teaching_with_a_whiteboard_and_laptop.jpg"
@@ -205,10 +208,10 @@ export default function Home() {
         <div className="max-w-container-max mx-auto px-4 md:px-8 lg:px-12">
           <div className="text-center mb-xl">
             <h2 className="font-montserrat font-semibold text-headline-lg-mobile md:text-headline-lg text-primary mb-sm">
-              Revolutionary Learning Tools
+              Online &amp; Offline Tuition Solutions
             </h2>
             <p className="font-inter text-on-surface-variant text-body-md max-w-2xl mx-auto">
-              We combine advanced technology with traditional pedagogical excellence to create the ultimate virtual learning environment.
+              We combine modern interactive digital learning with structured in-person guidance to provide comprehensive academic support for school students.
             </p>
           </div>
 
@@ -220,9 +223,9 @@ export default function Home() {
                   video_chat
                 </span>
               </div>
-              <h3 className="font-montserrat font-semibold text-headline-md text-primary mb-sm">Online Teaching Sessions</h3>
+              <h3 className="font-montserrat font-semibold text-headline-md text-primary mb-sm">Online Tuition Classes</h3>
               <p className="font-inter text-on-surface-variant text-body-md">
-                High-definition interactive sessions that bring the classroom to your home. Accessible from any device, anywhere.
+                Interactive live online sessions connecting students with top educators across India. Accessible from any device with real-time whiteboards and recorded revision.
               </p>
             </div>
 
@@ -233,9 +236,9 @@ export default function Home() {
                   school
                 </span>
               </div>
-              <h3 className="font-montserrat font-semibold text-headline-md text-primary mb-sm">Virtual Classrooms</h3>
+              <h3 className="font-montserrat font-semibold text-headline-md text-primary mb-sm">Offline Tuition Classes</h3>
               <p className="font-inter text-on-surface-variant text-body-md">
-                Immersive digital spaces with shared whiteboards, collaborative tools, and curated educational resources at your fingertips.
+                Structured in-person tuition classes providing focused classroom attention, disciplined study habits, and localized academic support for school curricula.
               </p>
             </div>
 
@@ -246,9 +249,9 @@ export default function Home() {
                   groups
                 </span>
               </div>
-              <h3 className="font-montserrat font-semibold text-headline-md text-primary mb-sm">Student-Teacher Interaction</h3>
+              <h3 className="font-montserrat font-semibold text-headline-md text-primary mb-sm">Personalized Mentorship</h3>
               <p className="font-inter text-on-surface-variant text-body-md">
-                Direct access to mentors for doubt clearing, real-time feedback, and personalized academic guidance for every student.
+                Direct access to experienced educators for individual doubt clearing, real-time feedback, and customized academic guidance for every learner.
               </p>
             </div>
           </div>
@@ -292,6 +295,7 @@ export default function Home() {
                 <div className="mt-auto">
                   <Link
                     to="/courses?filter=grade-3-5"
+                    aria-label="View Grades 3 to 5 tuition classes"
                     className="w-full flex items-center justify-center gap-sm bg-secondary text-white font-bold py-sm px-md rounded-lg shadow-sm hover:bg-secondary/90 transition-all group/btn"
                   >
                     <span>View More</span>
@@ -322,6 +326,7 @@ export default function Home() {
                 <div className="mt-auto">
                   <Link
                     to="/courses?filter=grade-6-10"
+                    aria-label="View Grades 6 to 12 tuition classes"
                     className="w-full flex items-center justify-center gap-sm bg-secondary text-white font-bold py-sm px-md rounded-lg shadow-sm hover:bg-secondary/90 transition-all group/btn"
                   >
                     <span>View More</span>
@@ -351,6 +356,7 @@ export default function Home() {
                 <div className="mt-auto">
                   <Link
                     to="/courses?filter=foundation"
+                    aria-label="View IIT-JEE and NEET foundation tuition programs"
                     className="w-full flex items-center justify-center gap-sm bg-secondary text-white font-bold py-sm px-md rounded-lg shadow-sm hover:bg-secondary/90 transition-all group/btn"
                   >
                     <span>View More</span>
@@ -380,6 +386,7 @@ export default function Home() {
                 <div className="mt-auto">
                   <Link
                     to="/courses?filter=coaching"
+                    aria-label="View IIT-JEE and NEET entrance coaching tuition"
                     className="w-full flex items-center justify-center gap-sm bg-secondary text-white font-bold py-sm px-md rounded-lg shadow-sm hover:bg-secondary/90 transition-all group/btn"
                   >
                     <span>View More</span>
@@ -409,6 +416,7 @@ export default function Home() {
                 <div className="mt-auto">
                   <Link
                     to="/courses?filter=languages"
+                    aria-label="View Language Excellence and communication tuition"
                     className="w-full flex items-center justify-center gap-sm bg-secondary text-white font-bold py-sm px-md rounded-lg shadow-sm hover:bg-secondary/90 transition-all group/btn"
                   >
                     <span>View More</span>
@@ -438,6 +446,7 @@ export default function Home() {
                 <div className="mt-auto">
                   <Link
                     to="/courses?filter=extracurriculars"
+                    aria-label="View Extracurricular tuition activities and Vedic Math"
                     className="w-full flex items-center justify-center gap-sm bg-secondary text-white font-bold py-sm px-md rounded-lg shadow-sm hover:bg-secondary/90 transition-all group/btn"
                   >
                     <span>View More</span>

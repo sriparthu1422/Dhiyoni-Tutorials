@@ -39,6 +39,16 @@ export default function AdminLayout() {
   const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || 'all');
   const [gradeFilter, setGradeFilter] = useState(searchParams.get('grade') || 'all');
 
+  // Sync state to URL
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (activeTab !== 'overview') params.set('tab', activeTab);
+    if (searchQuery) params.set('search', searchQuery);
+    if (statusFilter !== 'all') params.set('status', statusFilter);
+    if (gradeFilter !== 'all') params.set('grade', gradeFilter);
+    setSearchParams(params, { replace: true });
+  }, [activeTab, searchQuery, statusFilter, gradeFilter, setSearchParams]);
+
   const handleLogout = () => {
     localStorage.removeItem('dhiyoni_admin_token');
     localStorage.removeItem('dhiyoni_admin_user');
@@ -79,16 +89,6 @@ export default function AdminLayout() {
     }
   };
 
-  // Sync state to URL
-  useEffect(() => {
-    const params = new URLSearchParams();
-    if (activeTab !== 'overview') params.set('tab', activeTab);
-    if (searchQuery) params.set('search', searchQuery);
-    if (statusFilter !== 'all') params.set('status', statusFilter);
-    if (gradeFilter !== 'all') params.set('grade', gradeFilter);
-    setSearchParams(params, { replace: true });
-  }, [activeTab, searchQuery, statusFilter, gradeFilter, setSearchParams]);
-
   useEffect(() => {
     document.title = 'Admin Dashboard | DHIYONI Tutorials';
     
@@ -120,7 +120,6 @@ export default function AdminLayout() {
       console.error(err);
       handleLogout();
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Submission Status Updates
