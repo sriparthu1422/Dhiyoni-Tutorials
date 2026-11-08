@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import SEO from '../components/SEO'
 
 const faqs = [
@@ -29,7 +29,11 @@ export default function FAQ() {
 
   return (
     <>
-      <SEO title="Frequently Asked Questions" description="FAQ for Dhiyoni Tutorials" />
+      <SEO 
+        title="Frequently Asked Questions | DHIYONI Tutorials" 
+        description="Find answers to common questions about DHIYONI Tutorials online classes, curriculum, tutors, and trial sessions." 
+        canonicalPath="/faq"
+      />
       <div className="section-container py-12 md:py-20 max-w-3xl mx-auto">
         <h1 className="text-display-md font-montserrat font-bold text-primary mb-2 text-center">Frequently Asked Questions</h1>
         <p className="text-on-surface-variant text-center mb-12">Find answers to common questions about our tutoring services.</p>

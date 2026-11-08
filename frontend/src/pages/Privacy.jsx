@@ -1,10 +1,13 @@
-import React from 'react'
 import SEO from '../components/SEO'
 
 export default function Privacy() {
   return (
     <>
-      <SEO title="Privacy Policy" description="Privacy Policy for Dhiyoni Tutorials" />
+      <SEO 
+        title="Privacy Policy | DHIYONI Tutorials" 
+        description="Privacy Policy and personal data protection principles for DHIYONI Tutorials." 
+        canonicalPath="/privacy"
+      />
       <div className="section-container py-12 md:py-20">
         <h1 className="text-display-md font-montserrat font-bold text-primary mb-8">Privacy Policy</h1>
         <div className="prose prose-slate max-w-none text-on-surface">

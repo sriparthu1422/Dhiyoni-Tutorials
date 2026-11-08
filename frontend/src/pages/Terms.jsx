@@ -1,10 +1,13 @@
-import React from 'react'
 import SEO from '../components/SEO'
 
 export default function Terms() {
   return (
     <>
-      <SEO title="Terms of Service" description="Terms of Service for Dhiyoni Tutorials" />
+      <SEO 
+        title="Terms of Service | DHIYONI Tutorials" 
+        description="Terms and conditions for utilizing DHIYONI Tutorials educational services and website." 
+        canonicalPath="/terms"
+      />
       <div className="section-container py-12 md:py-20">
         <h1 className="text-display-md font-montserrat font-bold text-primary mb-8">Terms of Service</h1>
         <div className="prose prose-slate max-w-none text-on-surface">

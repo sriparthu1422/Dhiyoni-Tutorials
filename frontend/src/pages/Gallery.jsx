@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import SEO from '../components/SEO'
 
 export default function Gallery() {
@@ -20,7 +20,11 @@ export default function Gallery() {
 
   return (
     <div className="page-transition">
-      <SEO title="Gallery | Dhiyoni Tutorials" description="Take a look at the learning environment and success stories at Dhiyoni Tutorials." />
+      <SEO 
+        title="Gallery | Dhiyoni Tutorials" 
+        description="Take a look at the learning environment and success stories at Dhiyoni Tutorials." 
+        canonicalPath="/gallery"
+      />
       
       {/* Header */}
       <section className="bg-surface-container-low py-12 md:py-16 border-b border-outline-variant">
