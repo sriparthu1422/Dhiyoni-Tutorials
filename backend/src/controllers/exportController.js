@@ -183,14 +183,17 @@ export const initiateExport = async (req, res) => {
       throw createErr;
     }
 
-    // 6. Execution: synchronous (for fast verification/testing) or background
-    if (runSync) {
+    // 6. Execution: synchronous on serverless (Vercel / Lambda) to prevent lifecycle freezing, or background in daemon mode
+    const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+    if (runSync || isServerless) {
       try {
         const completedJob = await runExportJob(jobId, lockResult.ownerToken);
         return res.status(200).json({
           success: true,
           message: 'Export completed successfully',
           jobId,
+          status: 'completed',
+          destination: completedJob.destination,
           data: completedJob,
         });
       } catch (err) {
@@ -198,6 +201,7 @@ export const initiateExport = async (req, res) => {
           success: false,
           message: err.message || 'Export failed during execution',
           jobId,
+          status: 'failed',
         });
       }
     }
