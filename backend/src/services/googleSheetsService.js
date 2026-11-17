@@ -18,6 +18,8 @@ export function resetMockSheetsClient() {
   mockSheetsClient = null;
 }
 
+export const DEFAULT_SPREADSHEET_ID = '14sbOQb6MiXqKNWpVGjHvBOovNz9p3uNHl_pmCFgKGZY';
+
 /**
  * Checks whether Google Service Account credentials are fully configured.
  * @returns {boolean}
@@ -28,7 +30,7 @@ export function isGoogleConfigured() {
   const hasEmail = Boolean(process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL);
   const hasKey = Boolean(process.env.GOOGLE_PRIVATE_KEY);
   const hasKeyPath = Boolean(process.env.GOOGLE_SERVICE_ACCOUNT_KEY_PATH && fs.existsSync(process.env.GOOGLE_SERVICE_ACCOUNT_KEY_PATH));
-  const hasSheetId = Boolean(process.env.GOOGLE_SPREADSHEET_ID);
+  const hasSheetId = Boolean(process.env.GOOGLE_SPREADSHEET_ID || DEFAULT_SPREADSHEET_ID);
 
   return (hasEmail && hasKey && hasSheetId) || (hasKeyPath && hasSheetId);
 }

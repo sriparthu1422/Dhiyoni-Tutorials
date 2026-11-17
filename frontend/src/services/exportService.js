@@ -61,6 +61,8 @@ async function handleApiError(res, fallbackMessage) {
   throw error;
 }
 
+export const DEFAULT_SPREADSHEET_ID = '14sbOQb6MiXqKNWpVGjHvBOovNz9p3uNHl_pmCFgKGZY';
+
 /**
  * Initiate an export job to Google Sheets
  * @param {Object} options

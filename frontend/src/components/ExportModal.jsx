@@ -3,6 +3,7 @@ import {
   VALID_CATEGORIES,
   CATEGORY_LABELS,
   initiateExport,
+  DEFAULT_SPREADSHEET_ID,
 } from '../services/exportService';
 
 export default function ExportModal({ isOpen, onClose, onExportStarted }) {
@@ -62,6 +63,7 @@ export default function ExportModal({ isOpen, onClose, onExportStarted }) {
     try {
       const result = await initiateExport({
         categories: selectedCategories,
+        spreadsheetId: DEFAULT_SPREADSHEET_ID,
         idempotencyKey: activeRequestIdRef.current,
       });
 

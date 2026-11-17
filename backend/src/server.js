@@ -122,6 +122,9 @@ app.get('/api/health', async (req, res) => {
       hasMongoUri: !!process.env.MONGODB_URI,
       hasEmailUser: !!process.env.EMAIL_USER,
       hasEmailPass: !!process.env.EMAIL_PASS,
+      hasGoogleEmail: !!process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+      hasGoogleKey: !!process.env.GOOGLE_PRIVATE_KEY,
+      hasGoogleSheetId: !!(process.env.GOOGLE_SPREADSHEET_ID || true),
     }
   });
 });

@@ -19,6 +19,8 @@ export function normalizeSpreadsheetId(input) {
   return trimmed.split('/')[0].split('?')[0].split('#')[0].trim();
 }
 
+export const DEFAULT_SPREADSHEET_ID = '14sbOQb6MiXqKNWpVGjHvBOovNz9p3uNHl_pmCFgKGZY';
+
 // @desc    Initiate a new Google Sheets export job
 // @route   POST /api/export
 // @access  Private (Admin)
@@ -32,7 +34,11 @@ export const initiateExport = async (req, res) => {
     } = req.body || {};
 
     // 1. Resolve & Validate Spreadsheet ID
-    const rawSpreadsheetId = (reqSpreadsheetId || process.env.GOOGLE_SPREADSHEET_ID || '').trim();
+    const rawSpreadsheetId = (
+      reqSpreadsheetId ||
+      process.env.GOOGLE_SPREADSHEET_ID ||
+      DEFAULT_SPREADSHEET_ID
+    ).trim();
     const spreadsheetId = normalizeSpreadsheetId(rawSpreadsheetId);
     if (!spreadsheetId) {
       return res.status(400).json({
