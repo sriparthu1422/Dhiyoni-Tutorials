@@ -74,10 +74,13 @@ export const initiateExport = async (req, res) => {
         // Compare canonical sorted category arrays
         const reqCategoriesSorted = categories.slice().sort().join(',');
         const existingCategoriesSorted = existingJob.categories.slice().sort().join(',');
+        const isDestinationMismatch =
+          existingJob.destination?.spreadsheetId &&
+          existingJob.destination.spreadsheetId !== spreadsheetId;
 
-        if (existingCategoriesSorted !== reqCategoriesSorted) {
+        if (existingCategoriesSorted !== reqCategoriesSorted || isDestinationMismatch) {
           return res.status(400).json({
-            message: 'Idempotency key reuse with mismatched export categories.',
+            message: 'Idempotency key reuse with conflicting export parameters (mismatched export categories or destination).',
             jobId: existingJob.jobId,
           });
         }
@@ -152,6 +155,13 @@ export const initiateExport = async (req, res) => {
     } catch (createErr) {
       // Handle concurrent race condition for duplicate clientRequestId
       if (createErr.code === 11000 && clientRequestId) {
+        // Safely release the lock acquired by this attempt so no lock is leaked
+        try {
+          await releaseSpreadsheetLock(spreadsheetId, lockResult.ownerToken);
+        } catch {
+          // Ignore secondary release errors
+        }
+
         const winningJob = await ExportJob.findOne({ clientRequestId });
         if (winningJob) {
           return res.status(200).json({
@@ -174,6 +184,7 @@ export const initiateExport = async (req, res) => {
         return res.status(200).json({
           success: true,
           message: 'Export completed successfully',
+          jobId,
           data: completedJob,
         });
       } catch (err) {

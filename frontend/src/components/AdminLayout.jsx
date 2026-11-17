@@ -99,6 +99,7 @@ export default function AdminLayout() {
     }
     localStorage.removeItem('dhiyoni_admin_token');
     localStorage.removeItem('dhiyoni_admin_user');
+    sessionStorage.clear();
     navigate('/admin/login');
   }, [navigate, getHeaders]);
 

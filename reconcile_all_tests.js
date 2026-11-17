@@ -27,6 +27,7 @@ const testFiles = [
   'backend/test_phase7_2_api_security.js',
   'backend/test_phase7_3_export_reliability.js',
   'backend/test_phase7_4_backup_recovery.js',
+  'backend/test_phase7_final_security_corrections.js',
 ];
 
 console.log('================================================================================');
@@ -51,7 +52,7 @@ for (const file of testFiles) {
   process.stdout.write(`Running: ${file.padEnd(48)} ... `);
   const start = Date.now();
   const res = spawnSync(process.execPath, ['--test', file], {
-    env: { ...process.env, NODE_ENV: 'test', 'x-bypass-rate-limit': 'true' },
+    env: { ...process.env, NODE_ENV: 'test' },
     encoding: 'utf8',
     timeout: 180000,
   });

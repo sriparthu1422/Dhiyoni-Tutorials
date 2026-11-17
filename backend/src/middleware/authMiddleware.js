@@ -52,14 +52,38 @@ export const protect = async (req, res, next) => {
     }
 
     // Server-side session invalidation: Verify tokenVersion
-    if (
-      decoded.tokenVersion !== undefined &&
-      req.user.tokenVersion !== undefined &&
-      decoded.tokenVersion !== req.user.tokenVersion
-    ) {
+    // Legacy tokens missing tokenVersion are treated as version 0.
+    // If user's tokenVersion > 0 (e.g. after logout or password change), legacy tokens are strictly rejected.
+    const tokenVersion = decoded.tokenVersion !== undefined ? decoded.tokenVersion : 0;
+    const currentVersion = req.user.tokenVersion !== undefined ? req.user.tokenVersion : 0;
+    if (tokenVersion !== currentVersion) {
       return res.status(401).json({
         message: 'Session invalidated due to password change or logout. Please log in again.',
       });
+    }
+
+    // CSRF Defense for Cookie-Authenticated State-Changing Requests:
+    // If request relied on the session cookie (without a Bearer token in Authorization header),
+    // enforce that state-changing methods (POST, PUT, DELETE, PATCH) originate from an allowed origin.
+    const isCookieAuth = !req.headers.authorization && !!extractCookieToken(req);
+    if (isCookieAuth && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method)) {
+      const allowedOrigins = [
+        'https://www.dhiyonitutorials.com',
+        'https://dhiyonitutorials.com',
+        process.env.FRONTEND_URL,
+      ].filter(Boolean);
+
+      const requestOrigin =
+        req.headers.origin ||
+        (req.headers.referer ? new URL(req.headers.referer).origin : null);
+
+      if (process.env.NODE_ENV === 'production' || req.headers['x-test-csrf'] === 'true') {
+        if (!requestOrigin || !allowedOrigins.includes(requestOrigin)) {
+          return res.status(403).json({
+            message: 'CSRF validation failed: Request origin is not authorized for cookie-based state changes.',
+          });
+        }
+      }
     }
 
     // Set strict cache headers for all authenticated responses

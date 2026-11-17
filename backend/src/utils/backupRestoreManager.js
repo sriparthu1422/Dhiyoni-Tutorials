@@ -135,3 +135,121 @@ export function verifySnapshotIntegrity(snapshotDir) {
     errors,
   };
 }
+
+/**
+ * Hydrates raw JSON documents with appropriate BSON types (ObjectId, Date).
+ *
+ * @param {Object} doc - Raw parsed JSON document
+ * @returns {Object} Document with proper BSON types
+ */
+export function hydrateBsonTypes(doc) {
+  if (!doc || typeof doc !== 'object') return doc;
+  const hydrated = Array.isArray(doc) ? [] : {};
+
+  for (const [key, value] of Object.entries(doc)) {
+    if (value && typeof value === 'object') {
+      hydrated[key] = hydrateBsonTypes(value);
+    } else if (typeof value === 'string') {
+      // 1. Cast 24-char hex strings for _id or ObjectId references
+      if (key === '_id' || key === 'requestedBy' || key === 'lockedBy') {
+        if (/^[0-9a-fA-F]{24}$/.test(value)) {
+          hydrated[key] = new mongoose.Types.ObjectId(value);
+          continue;
+        }
+      }
+      // 2. Cast ISO date strings
+      if (
+        (key.endsWith('At') || key.endsWith('Timestamp') || key === 'dob') &&
+        /^\d{4}-\d{2}-\d{2}/.test(value)
+      ) {
+        const parsedDate = new Date(value);
+        if (!isNaN(parsedDate.getTime())) {
+          hydrated[key] = parsedDate;
+          continue;
+        }
+      }
+      hydrated[key] = value;
+    } else {
+      hydrated[key] = value;
+    }
+  }
+  return hydrated;
+}
+
+/**
+ * Restores a snapshot into an ISOLATED test database connection.
+ * Strictly forbids restoring over the production database.
+ *
+ * @param {Object} options
+ * @param {string} options.snapshotDir - Directory containing snapshot JSON files
+ * @param {mongoose.Connection} options.targetConnection - Isolated mongoose connection
+ * @returns {Promise<{ success: boolean, targetDatabase: string, restoredCollections: Record<string, number>, totalRestored: number }>}
+ */
+export async function restoreToIsolatedDatabase({ snapshotDir, targetConnection }) {
+  if (!targetConnection || !targetConnection.name) {
+    throw new Error('Valid isolated targetConnection is required');
+  }
+
+  // Strict safety check: Never restore to production database!
+  const targetDbName = targetConnection.name.toLowerCase();
+  const prodDbMatch = (process.env.MONGODB_URI || '').match(/\/([a-zA-Z0-9_-]+)\?/);
+  const prodDbName = prodDbMatch ? prodDbMatch[1].toLowerCase() : 'dhiyoni';
+
+  if (targetDbName === prodDbName && !targetDbName.includes('test') && !targetDbName.includes('isolated')) {
+    throw new Error(
+      `SAFETY BLOCK: Cannot restore over production database "${targetConnection.name}". Only isolated test databases are allowed.`
+    );
+  }
+
+  const metaPath = path.join(snapshotDir, 'SNAPSHOT_METADATA.json');
+  if (!fs.existsSync(metaPath)) {
+    throw new Error(`SNAPSHOT_METADATA.json not found in ${snapshotDir}`);
+  }
+
+  const metadata = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+  const restoredCollections = {};
+  let totalRestored = 0;
+
+  for (const { name } of COLLECTIONS) {
+    const filePath = path.join(snapshotDir, `${name}.json`);
+    if (!fs.existsSync(filePath)) continue;
+
+    const rawDocs = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    const targetColl = targetConnection.collection(name);
+
+    // Clear existing docs in isolated test collection
+    await targetColl.deleteMany({});
+
+    if (rawDocs.length > 0) {
+      const hydratedDocs = rawDocs.map((d) => hydrateBsonTypes(d));
+      await targetColl.insertMany(hydratedDocs, { ordered: true });
+    }
+
+    // Recreate indexes recorded in metadata
+    const recordedIndexes = metadata.collections[name]?.indexes || [];
+    for (const idx of recordedIndexes) {
+      if (idx.name !== '_id_') {
+        const options = {};
+        if (idx.unique) options.unique = true;
+        if (idx.sparse) options.sparse = true;
+        if (idx.expireAfterSeconds !== undefined) options.expireAfterSeconds = idx.expireAfterSeconds;
+        try {
+          await targetColl.createIndex(idx.key, options);
+        } catch {
+          // Ignore index warning if already exists
+        }
+      }
+    }
+
+    restoredCollections[name] = rawDocs.length;
+    totalRestored += rawDocs.length;
+  }
+
+  return {
+    success: true,
+    targetDatabase: targetConnection.name,
+    restoredCollections,
+    totalRestored,
+  };
+}
+

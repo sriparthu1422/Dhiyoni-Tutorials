@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   VALID_CATEGORIES,
   CATEGORY_LABELS,
@@ -11,8 +11,14 @@ export default function ExportModal({ isOpen, onClose, onExportStarted }) {
   const [isInitiating, setIsInitiating] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [conflictJob, setConflictJob] = useState(null);
+  const activeRequestIdRef = useRef(null);
 
   if (!isOpen) return null;
+
+  const handleClose = () => {
+    activeRequestIdRef.current = null;
+    onClose();
+  };
 
   const handleToggleAll = (checked) => {
     setIsAllSelected(checked);
@@ -42,6 +48,13 @@ export default function ExportModal({ isOpen, onClose, onExportStarted }) {
       return;
     }
 
+    if (!activeRequestIdRef.current) {
+      activeRequestIdRef.current =
+        typeof crypto !== 'undefined' && crypto.randomUUID
+          ? crypto.randomUUID()
+          : `req_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+    }
+
     setIsInitiating(true);
     setErrorMessage('');
     setConflictJob(null);
@@ -49,7 +62,10 @@ export default function ExportModal({ isOpen, onClose, onExportStarted }) {
     try {
       const result = await initiateExport({
         categories: selectedCategories,
+        idempotencyKey: activeRequestIdRef.current,
       });
+
+      activeRequestIdRef.current = null; // Reset for future exports on success
 
       if (onExportStarted) {
         onExportStarted(result);
@@ -83,7 +99,7 @@ export default function ExportModal({ isOpen, onClose, onExportStarted }) {
       <div className="bg-white rounded-3xl border border-outline-variant max-w-lg w-full p-6 md:p-8 relative shadow-2xl space-y-6 animate-fade-in-up">
         {/* Close Button */}
         <button
-          onClick={onClose}
+          onClick={handleClose}
           disabled={isInitiating}
           className="absolute top-5 right-5 text-on-surface-variant hover:text-primary transition-colors p-1.5 rounded-full hover:bg-surface-container disabled:opacity-50"
           aria-label="Close export modal"
@@ -202,7 +218,7 @@ export default function ExportModal({ isOpen, onClose, onExportStarted }) {
         <div className="flex items-center justify-end gap-3 pt-3 border-t border-outline-variant/20">
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleClose}
             disabled={isInitiating}
             className="px-4 py-2.5 rounded-xl border border-outline-variant/50 text-on-surface font-semibold text-xs hover:bg-surface-container transition-all disabled:opacity-50"
           >

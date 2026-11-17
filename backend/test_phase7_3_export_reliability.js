@@ -1,6 +1,9 @@
 import test, { describe, before, after } from 'node:test';
 import assert from 'node:assert/strict';
+import dns from 'node:dns';
 import http from 'node:http';
+
+dns.setDefaultResultOrder('ipv4first');
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';

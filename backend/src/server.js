@@ -81,7 +81,6 @@ app.use(
       'Authorization',
       'X-Requested-With',
       'Idempotency-Key',
-      'x-bypass-rate-limit',
     ],
   })
 );

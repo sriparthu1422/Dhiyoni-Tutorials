@@ -31,12 +31,15 @@ setInterval(() => {
 
 function getClientIp(req) {
   try {
-    if (req.headers && req.headers['x-forwarded-for']) {
-      return req.headers['x-forwarded-for'].split(',')[0].trim();
-    }
+    // When trust proxy is configured in Express (app.set('trust proxy', 1)),
+    // req.ip resolves the client IP securely via Express's trusted proxy logic,
+    // ignoring spoofed client-supplied values in X-Forwarded-For.
     if (req.ip) return req.ip;
     if (req.socket && req.socket.remoteAddress) return req.socket.remoteAddress;
     if (req.connection && req.connection.remoteAddress) return req.connection.remoteAddress;
+    if (req.headers && req.headers['x-forwarded-for']) {
+      return req.headers['x-forwarded-for'].split(',')[0].trim();
+    }
   } catch {
     // In mock request environments where socket is undefined
   }
@@ -44,11 +47,21 @@ function getClientIp(req) {
 }
 
 function isRateLimitActive(req) {
-  return (
-    process.env.NODE_ENV === 'production' ||
-    process.env.ENABLE_RATE_LIMIT === 'true' ||
-    req.headers?.['x-test-rate-limit'] === 'true'
-  );
+  // In production, rate limiting is STRICTLY ALWAYS active.
+  // Forged headers (e.g. x-bypass-rate-limit) are NEVER honored in production.
+  if (process.env.NODE_ENV === 'production') {
+    return true;
+  }
+  // In staging or when explicitly toggled on via environment variable
+  if (process.env.ENABLE_RATE_LIMIT === 'true') {
+    return true;
+  }
+  // For isolated test suites that explicitly test rate limiting
+  if (req?.headers?.['x-test-rate-limit'] === 'true') {
+    return true;
+  }
+  // Bypassed by default in test/development environments to prevent test harness flakiness
+  return false;
 }
 
 /**
