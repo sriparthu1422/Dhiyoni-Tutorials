@@ -36,6 +36,40 @@ export function isGoogleConfigured() {
 }
 
 /**
+ * Normalizes Google Service Account private key across all environments (Vercel, Docker, Local .env)
+ * Handles literal quotes, escaped newlines (\n, \\n), and CRLF formats.
+ * @param {string} rawKey
+ * @returns {string}
+ */
+export function formatPrivateKey(rawKey) {
+  if (!rawKey || typeof rawKey !== 'string') return '';
+  let key = rawKey.trim();
+
+  // Strip leading and trailing quotes (double, single, or backticks)
+  if (
+    (key.startsWith('"') && key.endsWith('"')) ||
+    (key.startsWith("'") && key.endsWith("'")) ||
+    (key.startsWith('`') && key.endsWith('`'))
+  ) {
+    key = key.slice(1, -1).trim();
+  }
+
+  // Also strip escaped quotes if present
+  if (key.startsWith('\\"') && key.endsWith('\\"')) {
+    key = key.slice(2, -2).trim();
+  }
+
+  // Replace literal '\r\n', '\\n', and '\n' escape sequences with actual newlines
+  key = key.replace(/\\r\\n/g, '\n').replace(/\\r/g, '\n');
+  key = key.replace(/\\\\n/g, '\n').replace(/\\n/g, '\n');
+
+  // Normalize any carriage returns
+  key = key.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+  return key.trim();
+}
+
+/**
  * Returns Google Sheets API client initialized with service account JWT auth.
  * @returns {Promise<Object>} google.sheets v4 client
  */
@@ -63,12 +97,11 @@ export async function getSheetsClient() {
       scopes,
     });
   } else {
-    // Format private key handling literal \n and real newlines
     const rawKey = process.env.GOOGLE_PRIVATE_KEY || '';
-    const privateKey = rawKey.includes('\\n') ? rawKey.replace(/\\n/g, '\n') : rawKey;
+    const privateKey = formatPrivateKey(rawKey);
 
     auth = new google.auth.JWT({
-      email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+      email: (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || '').trim(),
       key: privateKey,
       scopes,
     });
