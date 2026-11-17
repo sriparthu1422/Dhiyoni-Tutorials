@@ -24,6 +24,7 @@ import newsletterRoutes from './routes/newsletterRoutes.js';
 import tutorRoutes from './routes/tutorRoutes.js';
 import feedbackRoutes from './routes/feedbackRoutes.js';
 import galleryRoutes from './routes/galleryRoutes.js';
+import exportRoutes from './routes/exportRoutes.js';
 
 // Resolve directory paths in ES module
 const __filename = fileURLToPath(import.meta.url);
@@ -41,7 +42,7 @@ const app = express();
 // Middleware
 app.use(helmet());
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50kb' }));
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -98,6 +99,7 @@ app.use('/api/newsletters', newsletterRoutes);
 app.use('/api/tutors', tutorRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/gallery', galleryRoutes);
+app.use('/api/export', exportRoutes);
 
 // Base route
 app.get('/', (req, res) => {

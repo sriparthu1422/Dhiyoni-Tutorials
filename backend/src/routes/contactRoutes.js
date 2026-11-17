@@ -1,15 +1,22 @@
 import express from 'express';
-import { createContact, getContacts, updateContactStatus, deleteContact } from '../controllers/contactController.js';
-import { protect } from '../middleware/authMiddleware.js';
+import {
+  createContact,
+  getContacts,
+  getContactById,
+  updateContactStatus,
+  deleteContact,
+} from '../controllers/contactController.js';
+import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 router.route('/')
   .post(createContact)
-  .get(protect, getContacts);
+  .get(protect, admin, getContacts);
 
 router.route('/:id')
-  .put(protect, updateContactStatus)
-  .delete(protect, deleteContact);
+  .get(protect, admin, getContactById)
+  .put(protect, admin, updateContactStatus)
+  .delete(protect, admin, deleteContact);
 
 export default router;

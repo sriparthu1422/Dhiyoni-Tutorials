@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import SEO from '../components/SEO'
+import { useSubmissionTracker } from '../utils/submissionTracker'
 const grade3to5Img = "https://res.cloudinary.com/uzj6j4kh/image/upload/v1790882721/Grades_3-5.png";
 const grade6to12Img = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790883725/Grades_6-12.png';
 const iit1Img = 'https://res.cloudinary.com/uzj6j4kh/image/upload/v1790884417/IIT-2.png'
@@ -59,6 +60,7 @@ export default function Home() {
   const [feedbackLoading, setFeedbackLoading] = useState(false)
   const [feedbackError, setFeedbackError] = useState('')
   const [feedbackSuccess, setFeedbackSuccess] = useState(false)
+  const { getSubmissionId, resetSubmission } = useSubmissionTracker('feedback')
 
   /* Retained for Gallery Sneak Peek when re-enabled:
   const [galleryPreview, setGalleryPreview] = useState([])
@@ -85,6 +87,7 @@ export default function Home() {
 
   const handleFeedbackSubmit = async (e) => {
     e.preventDefault()
+    if (feedbackLoading) return // Prevent double-clicks during active submission
     setFeedbackError('')
     
     if (feedbackData.rating === 0) {
@@ -92,18 +95,49 @@ export default function Home() {
       return
     }
 
+    const trimmedName = feedbackData.name.trim()
+    const trimmedEmail = feedbackData.email.trim()
+    const trimmedMessage = feedbackData.message.trim()
+
+    if (!trimmedName || !trimmedEmail || !trimmedMessage || !feedbackData.userType) {
+      setFeedbackError('Please fill in all required fields.')
+      return
+    }
+
     setFeedbackLoading(true)
+
+    const payload = {
+      name: trimmedName,
+      userType: feedbackData.userType,
+      email: trimmedEmail,
+      contactNumber: feedbackData.contactNumber.trim(),
+      message: trimmedMessage,
+      rating: feedbackData.rating,
+    }
+
+    const submissionId = getSubmissionId(payload)
+    const submissionPayload = { ...payload, submissionId }
+
     try {
       const res = await fetch('/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(feedbackData),
+        body: JSON.stringify(submissionPayload),
       })
-      const data = await res.json()
+      const data = await res.json().catch(() => ({}))
       
-      if (!res.ok) throw new Error(data.message || 'Something went wrong')
+      if (!res.ok) {
+        if (res.status === 409) {
+          throw new Error(data.message || 'A conflicting feedback submission was detected. Please review and update your feedback.')
+        } else if (res.status === 429) {
+          throw new Error('Too many requests. Please wait a moment before trying again.')
+        } else {
+          throw new Error(data.message || 'Something went wrong while submitting feedback.')
+        }
+      }
       
-      // Success
+      // Success: Confirmed persistence (accepts 201 Created and 200 Replay)
+      resetSubmission()
       setFeedbackSuccess(true)
       setFeedbackData({
         name: '',
@@ -118,7 +152,9 @@ export default function Home() {
         setFeedbackSuccess(false)
       }, 5000)
     } catch (err) {
-      setFeedbackError(err.message)
+      console.error('Failed to submit feedback to backend:', err)
+      // Form values remain preserved in feedbackData for safe retry
+      setFeedbackError(err.message || 'Failed to submit feedback. Please check your connection and try again.')
     } finally {
       setFeedbackLoading(false)
     }

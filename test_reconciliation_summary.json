@@ -1,0 +1,174 @@
+{
+  "timestamp": "2026-11-16T16:27:16.083Z",
+  "summary": {
+    "totalFiles": 16,
+    "totalDiscovered": 151,
+    "totalExecuted": 151,
+    "totalPassed": 151,
+    "totalFailed": 0,
+    "totalSkipped": 0,
+    "totalDurationMs": 172343
+  },
+  "suites": [
+    {
+      "file": "backend/test_phase1.js",
+      "discovered": 8,
+      "executed": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 2559,
+      "status": "PASS"
+    },
+    {
+      "file": "backend/test_phase2.js",
+      "discovered": 20,
+      "executed": 20,
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 3655,
+      "status": "PASS"
+    },
+    {
+      "file": "backend/test_phase2_concurrency.js",
+      "discovered": 5,
+      "executed": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 4153,
+      "status": "PASS"
+    },
+    {
+      "file": "backend/test_phase2_failure.js",
+      "discovered": 5,
+      "executed": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 2486,
+      "status": "PASS"
+    },
+    {
+      "file": "backend/test_phase3.js",
+      "discovered": 8,
+      "executed": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 2995,
+      "status": "PASS"
+    },
+    {
+      "file": "test_e2e_browser.js",
+      "discovered": 7,
+      "executed": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 18984,
+      "status": "PASS"
+    },
+    {
+      "file": "backend/test_phase4.js",
+      "discovered": 14,
+      "executed": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 6009,
+      "status": "PASS"
+    },
+    {
+      "file": "test_e2e_admin.js",
+      "discovered": 9,
+      "executed": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 18770,
+      "status": "PASS"
+    },
+    {
+      "file": "backend/test_phase5.js",
+      "discovered": 25,
+      "executed": 25,
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 8400,
+      "status": "PASS"
+    },
+    {
+      "file": "backend/test_phase5_safe_publication.js",
+      "discovered": 12,
+      "executed": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 12172,
+      "status": "PASS"
+    },
+    {
+      "file": "backend/test_phase5_live.js",
+      "discovered": 3,
+      "executed": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 8281,
+      "status": "PASS"
+    },
+    {
+      "file": "backend/test_phase5_live_export.js",
+      "discovered": 7,
+      "executed": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 43404,
+      "status": "PASS"
+    },
+    {
+      "file": "backend/test_final_verification.js",
+      "discovered": 6,
+      "executed": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 19407,
+      "status": "PASS"
+    },
+    {
+      "file": "backend/test_hotfix.js",
+      "discovered": 8,
+      "executed": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 1371,
+      "status": "PASS"
+    },
+    {
+      "file": "test_export_service.js",
+      "discovered": 8,
+      "executed": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 242,
+      "status": "PASS"
+    },
+    {
+      "file": "test_e2e_admin_export.js",
+      "discovered": 6,
+      "executed": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 19455,
+      "status": "PASS"
+    }
+  ]
+}

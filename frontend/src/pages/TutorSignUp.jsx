@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import SEO from '../components/SEO'
+import { useSubmissionTracker } from '../utils/submissionTracker'
 
 const inputClass =
   'bg-surface rounded-xl border border-outline-variant focus:border-primary focus:ring-2 focus:ring-primary/20 py-3.5 px-md font-inter text-body-md outline-none transition-all w-full'
@@ -14,6 +15,7 @@ export default function TutorSignup() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const formRef = useRef(null)
+  const { getSubmissionId, resetSubmission } = useSubmissionTracker('tutorSignup')
 
   // Validate step fields
   const validateStep = (step) => {
@@ -124,27 +126,32 @@ export default function TutorSignup() {
       return
     }
 
+    if (isSubmitting) return // Prevent double-clicks during active submission
     setIsSubmitting(true)
+    setSubmitError('')
     const fData = new FormData(e.currentTarget)
     
     const selectedBoardsList = Object.keys(boards).filter((key) => boards[key])
     
     const payload = {
-      fullName: fData.get('full-name'),
+      fullName: fData.get('full-name')?.trim(),
       gender: fData.get('gender'),
-      email: fData.get('email'),
-      contact: fData.get('contact'),
+      email: fData.get('email')?.trim(),
+      contact: fData.get('contact')?.trim(),
       dob: fData.get('dob'),
-      location: fData.get('location'),
-      qualification: fData.get('qualification'),
+      location: fData.get('location')?.trim(),
+      qualification: fData.get('qualification')?.trim(),
       occupation: occupation,
-      experience: fData.get('experience'),
-      grades: fData.get('grades'),
-      subjects: fData.get('subjects'),
-      time: fData.get('time'),
+      experience: fData.get('experience')?.trim() || '',
+      grades: fData.get('grades')?.trim(),
+      subjects: fData.get('subjects')?.trim(),
+      time: fData.get('time')?.trim(),
       boards: selectedBoardsList,
       hasTech
     }
+
+    const submissionId = getSubmissionId(payload)
+    const submissionPayload = { ...payload, submissionId }
     
     try {
       const response = await fetch('/api/tutor-signups', {
@@ -152,15 +159,22 @@ export default function TutorSignup() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(submissionPayload),
       });
 
       if (!response.ok) {
-        const errData = await response.json()
-        throw new Error(errData.message || 'Server failed to record application');
+        const errData = await response.json().catch(() => ({}))
+        if (response.status === 409) {
+          throw new Error(errData.message || 'A conflicting application with this ID was detected. Please review and update your details.')
+        } else if (response.status === 429) {
+          throw new Error('Too many requests. Please wait a moment before trying again.')
+        } else {
+          throw new Error(errData.message || 'Server failed to record application. Please try again.')
+        }
       }
 
-      // Reset form states on success
+      // Success: Confirmed persistence (accepts 201 Created and 200 Replay)
+      resetSubmission()
       e.target.reset()
       setBoards({ state: false, cbse: false, icse: false, cambridge: false })
       setHasTech(false)
@@ -171,6 +185,7 @@ export default function TutorSignup() {
       setShowSuccessModal(true)
     } catch (error) {
       console.error('Failed to submit tutor application to backend:', error);
+      // Form values are preserved in DOM for safe retry with identical submissionId
       setSubmitError(error.message || 'Failed to submit application. Please check your internet connection and try again.');
     } finally {
       setIsSubmitting(false)

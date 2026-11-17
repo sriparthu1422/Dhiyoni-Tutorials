@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const tutorSignupSchema = new mongoose.Schema({
+  submissionId: {
+    type: String,
+    trim: true,
+  },
   fullName: {
     type: String,
     required: [true, 'Full Name is required'],
@@ -78,6 +82,17 @@ const tutorSignupSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+// Indexes for query performance and idempotent submission tracking
+tutorSignupSchema.index(
+  { submissionId: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { submissionId: { $type: 'string' } },
+  }
+);
+tutorSignupSchema.index({ createdAt: -1 });
+tutorSignupSchema.index({ status: 1, createdAt: -1 });
 
 const TutorSignup = mongoose.model('TutorSignup', tutorSignupSchema);
 export default TutorSignup;

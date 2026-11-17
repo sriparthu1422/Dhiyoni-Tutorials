@@ -1,6 +1,6 @@
 import express from 'express';
 import Gallery from '../models/Gallery.js';
-import { protect } from '../middleware/authMiddleware.js';
+import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -18,8 +18,8 @@ router.get('/', async (req, res) => {
 
 // @route   POST /api/gallery
 // @desc    Add a new gallery image
-// @access  Private
-router.post('/', protect, async (req, res) => {
+// @access  Private (Admin)
+router.post('/', protect, admin, async (req, res) => {
   try {
     const { url, alt, category } = req.body;
     if (!url) {
@@ -35,8 +35,8 @@ router.post('/', protect, async (req, res) => {
 
 // @route   DELETE /api/gallery/:id
 // @desc    Delete a gallery image
-// @access  Private
-router.delete('/:id', protect, async (req, res) => {
+// @access  Private (Admin)
+router.delete('/:id', protect, admin, async (req, res) => {
   try {
     const image = await Gallery.findById(req.params.id);
     if (!image) {

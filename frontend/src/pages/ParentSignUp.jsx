@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import SEO from '../components/SEO'
+import { useSubmissionTracker } from '../utils/submissionTracker'
 
 const inputClass =
   'w-full p-sm bg-surface border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all font-inter text-body-md'
@@ -9,6 +10,7 @@ export default function ParentSignup() {
   const [errors, setErrors] = useState({})
   const [submitError, setSubmitError] = useState('')
   const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const { getSubmissionId, resetSubmission } = useSubmissionTracker('parentSignup')
 
   const validateForm = (formData) => {
     const newErrors = {}
@@ -54,6 +56,7 @@ export default function ParentSignup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (btnState === 'processing') return // Double-click prevention
     setSubmitError('')
     setErrors({})
 
@@ -74,8 +77,11 @@ export default function ParentSignup() {
       email: fData.get('email')?.trim(),
       city: fData.get('city')?.trim(),
       state: fData.get('state')?.trim(),
-      referral: fData.get('referral')
+      referral: fData.get('referral') || ''
     }
+
+    const submissionId = getSubmissionId(payload)
+    const submissionPayload = { ...payload, submissionId }
     
     try {
       const response = await fetch('/api/parent-signups', {
@@ -83,19 +89,28 @@ export default function ParentSignup() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(submissionPayload),
       });
 
       if (!response.ok) {
-        const errData = await response.json()
-        throw new Error(errData.message || 'Server failed to record registration');
+        const errData = await response.json().catch(() => ({}))
+        if (response.status === 409) {
+          throw new Error(errData.message || 'A conflicting registration with this ID was detected. Please review and update your details.')
+        } else if (response.status === 429) {
+          throw new Error('Too many requests. Please wait a moment before trying again.')
+        } else {
+          throw new Error(errData.message || 'Server failed to record registration. Please try again.')
+        }
       }
 
+      // Success: Confirmed persistence (accepts 201 Created and 200 Replay)
+      resetSubmission()
       e.target.reset()
       setErrors({})
       setShowSuccessModal(true)
     } catch (error) {
       console.error('Failed to submit parent signup to backend:', error);
+      // Form values remain preserved in DOM inputs for safe retry
       setSubmitError(error.message || 'Failed to submit registration. Please check your internet connection and try again.');
     } finally {
       setBtnState('idle')

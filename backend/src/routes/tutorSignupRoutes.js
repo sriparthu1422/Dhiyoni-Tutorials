@@ -1,15 +1,22 @@
 import express from 'express';
-import { createTutorSignup, getTutorSignups, updateTutorSignupStatus, deleteTutorSignup } from '../controllers/tutorSignupController.js';
-import { protect } from '../middleware/authMiddleware.js';
+import {
+  createTutorSignup,
+  getTutorSignups,
+  getTutorSignupById,
+  updateTutorSignupStatus,
+  deleteTutorSignup,
+} from '../controllers/tutorSignupController.js';
+import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 router.route('/')
   .post(createTutorSignup)
-  .get(protect, getTutorSignups);
+  .get(protect, admin, getTutorSignups);
 
 router.route('/:id')
-  .put(protect, updateTutorSignupStatus)
-  .delete(protect, deleteTutorSignup);
+  .get(protect, admin, getTutorSignupById)
+  .put(protect, admin, updateTutorSignupStatus)
+  .delete(protect, admin, deleteTutorSignup);
 
 export default router;

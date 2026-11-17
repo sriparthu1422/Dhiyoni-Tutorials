@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 
 const feedbackSchema = new mongoose.Schema(
   {
+    submissionId: {
+      type: String,
+      trim: true,
+    },
     name: {
       type: String,
       required: [true, 'Please provide your full name'],
@@ -41,6 +45,17 @@ const feedbackSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Indexes for query performance and idempotent submission tracking
+feedbackSchema.index(
+  { submissionId: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { submissionId: { $type: 'string' } },
+  }
+);
+feedbackSchema.index({ createdAt: -1 });
+feedbackSchema.index({ rating: 1, createdAt: -1 });
 
 const Feedback = mongoose.model('Feedback', feedbackSchema);
 

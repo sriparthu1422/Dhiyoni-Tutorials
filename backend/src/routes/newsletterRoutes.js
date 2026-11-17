@@ -1,14 +1,20 @@
 import express from 'express';
-import { subscribeNewsletter, getNewsletters, deleteNewsletter } from '../controllers/newsletterController.js';
-import { protect } from '../middleware/authMiddleware.js';
+import {
+  subscribeNewsletter,
+  getNewsletters,
+  getNewsletterById,
+  deleteNewsletter,
+} from '../controllers/newsletterController.js';
+import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 router.route('/')
   .post(subscribeNewsletter)
-  .get(protect, getNewsletters);
+  .get(protect, admin, getNewsletters);
 
 router.route('/:id')
-  .delete(protect, deleteNewsletter);
+  .get(protect, admin, getNewsletterById)
+  .delete(protect, admin, deleteNewsletter);
 
 export default router;

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import SEO from '../components/SEO'
-import logo from '../assets/logo.png' 
+import logo from '../assets/logo.png'
+import { useSubmissionTracker } from '../utils/submissionTracker' 
 
 const faqs = [
   {
@@ -50,17 +51,41 @@ function FAQItem({ question, answer }) {
 export default function Contact() {
   const formRef = useRef(null)
   const [btnState, setBtnState] = useState('idle') // idle | sending | sent
+  const [submitError, setSubmitError] = useState('')
   const [formData, setFormData] = useState({ name: '', email: '', subject: 'Course Inquiry', message: '' })
+  const { getSubmissionId, resetSubmission } = useSubmissionTracker('contact')
 
   const update = (field) => (e) => setFormData({ ...formData, [field]: e.target.value })
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (btnState !== 'idle') return // Prevent double-clicks during active submission
+    setSubmitError('')
+    
+    const trimmedName = formData.name.trim()
+    const trimmedEmail = formData.email.trim()
+    const trimmedMessage = formData.message.trim()
+
+    if (!trimmedName || !trimmedEmail || !trimmedMessage) {
+      setSubmitError('Please fill in all required fields.')
+      return
+    }
+
     setBtnState('sending')
+
+    const payload = {
+      name: trimmedName,
+      email: trimmedEmail,
+      subject: formData.subject || 'Course Inquiry',
+      message: trimmedMessage,
+    }
+
+    const submissionId = getSubmissionId(payload)
+    const submissionPayload = { ...payload, submissionId }
     
     // Construct the WhatsApp message with form details
-    const whatsappMessage = `Hi DHIYONI Tutorials,\n\nI would like to submit an inquiry with the following details:\n\n*Name:* ${formData.name}\n*Email:* ${formData.email}\n*Subject:* ${formData.subject}\n*Message:* ${formData.message}\n\nPlease help me with my inquiry.\n\nThank you.`;
-    const whatsappUrl = `https://wa.me/917901034846?text=${encodeURIComponent(whatsappMessage)}`;
+    const whatsappMessage = `Hi DHIYONI Tutorials,\n\nI would like to submit an inquiry with the following details:\n\n*Name:* ${trimmedName}\n*Email:* ${trimmedEmail}\n*Subject:* ${payload.subject}\n*Message:* ${trimmedMessage}\n\nPlease help me with my inquiry.\n\nThank you.`
+    const whatsappUrl = `https://wa.me/917901034846?text=${encodeURIComponent(whatsappMessage)}`
     
     try {
       const response = await fetch('/api/contacts', {
@@ -68,13 +93,22 @@ export default function Contact() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
-      });
+        body: JSON.stringify(submissionPayload),
+      })
 
       if (!response.ok) {
-        throw new Error('Server returned an error');
+        const errData = await response.json().catch(() => ({}))
+        if (response.status === 409) {
+          throw new Error(errData.message || 'A conflicting submission with this ID was detected. Please review and update your details.')
+        } else if (response.status === 429) {
+          throw new Error('Too many requests. Please wait a moment before trying again.')
+        } else {
+          throw new Error(errData.message || 'Server failed to record inquiry. Please try again.')
+        }
       }
 
+      // Success: Confirmed persistence (accepts both 201 Created and 200 Replay)
+      resetSubmission()
       setBtnState('sent')
       window.open(whatsappUrl, '_blank')
       setFormData({ name: '', email: '', subject: 'Course Inquiry', message: '' })
@@ -82,14 +116,10 @@ export default function Contact() {
         setBtnState('idle')
       }, 3000)
     } catch (error) {
-      console.error('Failed to submit contact to backend:', error);
-      // Fallback: Still allow WhatsApp redirect so user is not blocked
-      setBtnState('sent')
-      window.open(whatsappUrl, '_blank')
-      setFormData({ name: '', email: '', subject: 'Course Inquiry', message: '' })
-      setTimeout(() => {
-        setBtnState('idle')
-      }, 3000)
+      console.error('Failed to submit contact to backend:', error)
+      // Form values are preserved for safe retry with identical submissionId
+      setSubmitError(error.message || 'Failed to submit inquiry. Please check your connection and try again.')
+      setBtnState('idle')
     }
   }
 
@@ -121,6 +151,12 @@ export default function Contact() {
           {/* ── CONTACT FORM (col-span-7) ───────────────────────── */}
           <div className="lg:col-span-7 bg-white p-6 md:p-lg rounded-xl border border-outline-variant teal-shadow">
             <h2 className="font-montserrat font-semibold text-headline-md text-primary mb-lg">Send us a Message</h2>
+            {submitError && (
+              <div className="mb-md p-4 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-body-sm flex items-start gap-2 animate-fade-in">
+                <span className="material-symbols-outlined shrink-0 text-[20px]">error</span>
+                <span>{submitError}</span>
+              </div>
+            )}
             <form ref={formRef} className="space-y-md" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
                 <div className="space-y-xs">

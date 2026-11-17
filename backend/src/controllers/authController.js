@@ -1,5 +1,10 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import Contact from '../models/Contact.js';
+import ParentSignup from '../models/ParentSignup.js';
+import TutorSignup from '../models/TutorSignup.js';
+import Newsletter from '../models/Newsletter.js';
+import Feedback from '../models/Feedback.js';
 
 // Generate Token
 const generateToken = (id) => {
@@ -75,6 +80,46 @@ export const updatePassword = async (req, res) => {
     await user.save();
 
     res.json({ message: 'Password updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Get aggregated overview counts for dashboard
+// @route   GET /api/auth/dashboard-stats
+// @access  Private (Admin)
+export const getDashboardStats = async (req, res) => {
+  try {
+    const [
+      totalContacts,
+      pendingContacts,
+      totalParents,
+      pendingParents,
+      totalTutors,
+      pendingTutors,
+      totalNewsletters,
+      totalFeedbacks,
+    ] = await Promise.all([
+      Contact.countDocuments(),
+      Contact.countDocuments({ status: 'Pending' }),
+      ParentSignup.countDocuments(),
+      ParentSignup.countDocuments({ status: 'Pending' }),
+      TutorSignup.countDocuments(),
+      TutorSignup.countDocuments({ status: 'Pending' }),
+      Newsletter.countDocuments(),
+      Feedback.countDocuments(),
+    ]);
+
+    res.json({
+      success: true,
+      data: {
+        contacts: { total: totalContacts, pending: pendingContacts },
+        parentSignups: { total: totalParents, pending: pendingParents },
+        tutorSignups: { total: totalTutors, pending: pendingTutors },
+        newsletters: { total: totalNewsletters, pending: 0 },
+        feedbacks: { total: totalFeedbacks, pending: 0 },
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

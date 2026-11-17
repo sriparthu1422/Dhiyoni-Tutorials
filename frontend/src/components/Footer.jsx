@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../assets/logo.png'
+import { useSubmissionTracker } from '../utils/submissionTracker'
 
 const quickLinks = [
   { to: '/', label: 'Home' },
@@ -19,12 +20,24 @@ const legalLinks = [
 
 export default function Footer() {
   const [newsletterEmail, setNewsletterEmail] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [newsletterMsg, setNewsletterMsg] = useState({ type: '', text: '' })
+  const { getSubmissionId, resetSubmission } = useSubmissionTracker('newsletter')
 
   const handleNewsletterSubmit = async (e) => {
     e.preventDefault()
-    if (!newsletterEmail) return
+    if (isSubmitting) return // Double-click prevention
+    const trimmedEmail = newsletterEmail.trim().toLowerCase()
+    if (!trimmedEmail) return
 
-    const whatsappMessage = `Hi DHIYONI Tutorials,\n\nI would like to subscribe to your newsletter with the following email address:\n\n*Email:* ${newsletterEmail}\n\nPlease add me to your mailing list.\n\nThank you.`;
+    setIsSubmitting(true)
+    setNewsletterMsg({ type: '', text: '' })
+
+    const payload = { email: trimmedEmail }
+    const submissionId = getSubmissionId(payload)
+    const submissionPayload = { ...payload, submissionId }
+
+    const whatsappMessage = `Hi DHIYONI Tutorials,\n\nI would like to subscribe to your newsletter with the following email address:\n\n*Email:* ${trimmedEmail}\n\nPlease add me to your mailing list.\n\nThank you.`;
     const whatsappUrl = `https://wa.me/917901034846?text=${encodeURIComponent(whatsappMessage)}`;
     
     try {
@@ -33,21 +46,38 @@ export default function Footer() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: newsletterEmail }),
+        body: JSON.stringify(submissionPayload),
       });
 
-      // Note: we swallow "already subscribed" (400) to keep UX smooth, but can log it
-      if (!response.ok && response.status !== 400) {
-        throw new Error('Server returned an error');
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        if (response.status === 409) {
+          setNewsletterMsg({ type: 'error', text: errData.message || 'A conflicting subscription request was detected. Please review and update your email.' })
+        } else if (response.status === 400 && errData.message?.toLowerCase().includes('already subscribed')) {
+          setNewsletterMsg({ type: 'error', text: 'This email is already subscribed.' })
+        } else if (response.status === 429) {
+          setNewsletterMsg({ type: 'error', text: 'Too many requests. Please wait a moment and try again.' })
+        } else {
+          setNewsletterMsg({ type: 'error', text: errData.message || 'Subscription failed. Please try again.' })
+        }
+        // Do not redirect to WhatsApp and preserve user input
+        return;
       }
 
+      // Success: Confirmed persistence in database (201 Created or 200 Replay)
+      resetSubmission()
+      setNewsletterMsg({ type: 'success', text: 'Subscribed successfully! Thank you.' })
       window.open(whatsappUrl, '_blank')
       setNewsletterEmail('')
+      setTimeout(() => {
+        setNewsletterMsg({ type: '', text: '' })
+      }, 4000)
     } catch (error) {
       console.error('Failed to subscribe newsletter to backend:', error);
-      // Fallback: Still allow WhatsApp redirect so user is not blocked
-      window.open(whatsappUrl, '_blank')
-      setNewsletterEmail('')
+      // Critical fix: Never show false success or redirect on database failure. Preserve email for retry.
+      setNewsletterMsg({ type: 'error', text: 'Unable to connect to server. Please try again later.' })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -147,7 +177,7 @@ export default function Footer() {
             <p className="text-on-surface-variant text-body-sm mb-4">
               Stay updated with the latest in education and exam tips.
             </p>
-            <form onSubmit={handleNewsletterSubmit} className="flex mb-6">
+            <form onSubmit={handleNewsletterSubmit} className="flex mb-2">
               <input
                 type="email"
                 required
@@ -157,10 +187,24 @@ export default function Footer() {
                 aria-label="Newsletter email address"
                 className="bg-surface border border-outline-variant rounded-l-lg px-md py-sm w-full text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
               />
-              <button type="submit" className="bg-primary text-white px-md py-sm rounded-r-lg hover:bg-primary-container transition-colors shrink-0">
-                <span className="material-symbols-outlined text-[20px]">send</span>
+              <button 
+                type="submit" 
+                disabled={isSubmitting}
+                aria-label="Submit newsletter subscription"
+                className="bg-primary text-white px-md py-sm rounded-r-lg hover:bg-primary-container transition-colors shrink-0 disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? (
+                  <span className="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
+                ) : (
+                  <span className="material-symbols-outlined text-[20px]">send</span>
+                )}
               </button>
             </form>
+            {newsletterMsg.text && (
+              <p className={`text-xs mt-1 font-medium ${newsletterMsg.type === 'error' ? 'text-rose-600' : 'text-emerald-700'}`}>
+                {newsletterMsg.text}
+              </p>
+            )}
           </div>
         </div>
       </div>

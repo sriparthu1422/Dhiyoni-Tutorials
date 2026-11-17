@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const contactSchema = new mongoose.Schema({
+  submissionId: {
+    type: String,
+    trim: true,
+  },
   name: {
     type: String,
     required: [true, 'Name is required'],
@@ -31,6 +35,17 @@ const contactSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+// Indexes for query performance and idempotent submission tracking
+contactSchema.index(
+  { submissionId: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { submissionId: { $type: 'string' } },
+  }
+);
+contactSchema.index({ createdAt: -1 });
+contactSchema.index({ status: 1, createdAt: -1 });
 
 const Contact = mongoose.model('Contact', contactSchema);
 export default Contact;

@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const parentSignupSchema = new mongoose.Schema({
+  submissionId: {
+    type: String,
+    trim: true,
+  },
   studentName: {
     type: String,
     required: [true, 'Student Name is required'],
@@ -61,6 +65,17 @@ const parentSignupSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+// Indexes for query performance and idempotent submission tracking
+parentSignupSchema.index(
+  { submissionId: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { submissionId: { $type: 'string' } },
+  }
+);
+parentSignupSchema.index({ createdAt: -1 });
+parentSignupSchema.index({ status: 1, createdAt: -1 });
 
 const ParentSignup = mongoose.model('ParentSignup', parentSignupSchema);
 export default ParentSignup;
