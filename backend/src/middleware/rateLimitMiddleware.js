@@ -29,7 +29,7 @@ setInterval(() => {
   }
 }, 5 * 60 * 1000).unref();
 
-function getClientIp(req) {
+export function getClientIp(req) {
   try {
     // When trust proxy is configured in Express (app.set('trust proxy', 1)),
     // req.ip resolves the client IP securely via Express's trusted proxy logic,

@@ -99,7 +99,14 @@ export default function AdminLayout() {
     }
     localStorage.removeItem('dhiyoni_admin_token');
     localStorage.removeItem('dhiyoni_admin_user');
-    sessionStorage.clear();
+    sessionStorage.removeItem('dhiyoni_active_export_jobId');
+    // Targeted removal: Clear only application-owned admin session keys, preserving unrelated keys and public website session state
+    for (let i = sessionStorage.length - 1; i >= 0; i--) {
+      const key = sessionStorage.key(i);
+      if (key && key.startsWith('dhiyoni_admin_')) {
+        sessionStorage.removeItem(key);
+      }
+    }
     navigate('/admin/login');
   }, [navigate, getHeaders]);
 
