@@ -111,6 +111,11 @@ export async function initiateExport({ categories, spreadsheetId, runSync = fals
     await handleApiError(res, 'Failed to initiate export');
   }
 
+  const contentType = res.headers?.get ? (res.headers.get('content-type') || '') : 'application/json';
+  if (!contentType.includes('application/json')) {
+    throw new Error(`Server returned non-JSON response (HTTP ${res.status}). Please verify API connectivity.`);
+  }
+
   const json = await res.json();
   return {
     success: true,
@@ -184,6 +189,11 @@ export async function getExportHistory({ page = 1, limit = 10 } = {}) {
 
   if (!res.ok) {
     await handleApiError(res, 'Failed to load export history');
+  }
+
+  const contentType = res.headers?.get ? (res.headers.get('content-type') || '') : 'application/json';
+  if (!contentType.includes('application/json')) {
+    throw new Error(`Server returned non-JSON response (HTTP ${res.status}). Please verify API connectivity.`);
   }
 
   const json = await res.json();

@@ -69,7 +69,12 @@ app.use(
   cors({
     origin: (origin, callback) => {
       // In development or test, or requests with no origin, allow all
-      if (!origin || process.env.NODE_ENV !== 'production' || allowedOrigins.includes(origin)) {
+      if (
+        !origin ||
+        process.env.NODE_ENV !== 'production' ||
+        allowedOrigins.includes(origin) ||
+        origin.endsWith('.vercel.app')
+      ) {
         return callback(null, true);
       }
       return callback(new Error('Blocked by CORS policy'));

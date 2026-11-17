@@ -33,6 +33,11 @@ export default function AdminLogin() {
         body: JSON.stringify({ email, password }),
       });
 
+      const contentType = response.headers?.get ? (response.headers.get('content-type') || '') : 'application/json';
+      if (!contentType.includes('application/json')) {
+        throw new Error(`Server returned non-JSON response (HTTP ${response.status}). Please verify API connectivity.`);
+      }
+
       const data = await response.json();
 
       if (!response.ok) {

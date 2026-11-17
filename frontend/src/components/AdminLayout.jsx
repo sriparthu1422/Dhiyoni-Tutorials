@@ -129,6 +129,8 @@ export default function AdminLayout() {
     try {
       const res = await fetch('/api/auth/dashboard-stats', { headers: getHeaders() });
       if (res.ok) {
+        const contentType = res.headers?.get ? (res.headers.get('content-type') || '') : 'application/json';
+        if (!contentType.includes('application/json')) return;
         const json = await res.json();
         if (json.success && json.data) {
           setOverviewStats(json.data);
@@ -171,6 +173,11 @@ export default function AdminLayout() {
       if (res.status === 401 || res.status === 403) {
         handleLogout();
         return;
+      }
+
+      const contentType = res.headers?.get ? (res.headers.get('content-type') || '') : 'application/json';
+      if (!contentType.includes('application/json')) {
+        throw new Error(`Server returned non-JSON response (HTTP ${res.status}). Please verify API connectivity.`);
       }
 
       const json = await res.json();
@@ -285,6 +292,10 @@ export default function AdminLayout() {
         if (res.status === 401 || res.status === 403) {
           handleLogout();
           return;
+        }
+        const contentType = res.headers?.get ? (res.headers.get('content-type') || '') : 'application/json';
+        if (!contentType.includes('application/json')) {
+          throw new Error(`Server returned non-JSON response (HTTP ${res.status}). Please verify API connectivity.`);
         }
         const json = await res.json();
         if (!res.ok) throw new Error(json.message || 'Failed to fetch submission data');
