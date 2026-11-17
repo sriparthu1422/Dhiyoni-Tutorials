@@ -88,11 +88,19 @@ export default function AdminLayout() {
     'Content-Type': 'application/json',
   }), []);
 
-  const handleLogout = useCallback(() => {
+  const handleLogout = useCallback(async () => {
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: getHeaders(),
+      });
+    } catch {
+      // Ignore network errors on logout
+    }
     localStorage.removeItem('dhiyoni_admin_token');
     localStorage.removeItem('dhiyoni_admin_user');
     navigate('/admin/login');
-  }, [navigate]);
+  }, [navigate, getHeaders]);
 
   // Sync state to URL search parameters
   useEffect(() => {

@@ -64,10 +64,40 @@ export const initiateExport = async (req, res) => {
       categories = reqCategories;
     }
 
-    // 3. Generate unique Job Identifier
+    // 3. Request-Level Idempotency Check (Idempotency-Key Header or clientRequestId body param)
+    const rawClientRequestId = (req.headers['idempotency-key'] || req.body?.clientRequestId || '').trim();
+    const clientRequestId = rawClientRequestId || null;
+
+    if (clientRequestId) {
+      const existingJob = await ExportJob.findOne({ clientRequestId });
+      if (existingJob) {
+        // Compare canonical sorted category arrays
+        const reqCategoriesSorted = categories.slice().sort().join(',');
+        const existingCategoriesSorted = existingJob.categories.slice().sort().join(',');
+
+        if (existingCategoriesSorted !== reqCategoriesSorted) {
+          return res.status(400).json({
+            message: 'Idempotency key reuse with mismatched export categories.',
+            jobId: existingJob.jobId,
+          });
+        }
+
+        // Return existing job without re-initiating
+        return res.status(200).json({
+          success: true,
+          message: 'Export job already initiated with this request ID',
+          jobId: existingJob.jobId,
+          status: existingJob.status,
+          destination: existingJob.destination,
+          isExisting: true,
+        });
+      }
+    }
+
+    // 4. Generate unique Job Identifier
     const jobId = `exp_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`;
 
-    // 4. Acquire exclusive atomic spreadsheet lock
+    // 5. Acquire exclusive atomic spreadsheet lock
     const lockResult = await acquireSpreadsheetLock(
       spreadsheetId,
       jobId,
@@ -76,6 +106,24 @@ export const initiateExport = async (req, res) => {
     );
 
     if (!lockResult.acquired) {
+      // If clientRequestId was provided, check if the concurrent in-flight job belongs to this request
+      if (clientRequestId) {
+        for (let i = 0; i < 5; i++) {
+          const inFlightJob = await ExportJob.findOne({ clientRequestId });
+          if (inFlightJob) {
+            return res.status(200).json({
+              success: true,
+              message: 'Export job already initiated with this request ID',
+              jobId: inFlightJob.jobId,
+              status: inFlightJob.status,
+              destination: inFlightJob.destination,
+              isExisting: true,
+            });
+          }
+          await new Promise((resolve) => setTimeout(resolve, 80));
+        }
+      }
+
       return res.status(409).json({
         message: 'Concurrent export in progress: Destination spreadsheet is currently locked by another export job',
         activeJobId: lockResult.existingLock?.jobId,
@@ -84,20 +132,40 @@ export const initiateExport = async (req, res) => {
       });
     }
 
-    // 5. Create ExportJob record
-    const job = await ExportJob.create({
-      jobId,
-      exportType,
-      categories,
-      requestedBy: req.user._id,
-      status: 'pending',
-      destination: {
-        spreadsheetId,
-        spreadsheetUrl: `https://docs.google.com/spreadsheets/d/${spreadsheetId}`,
-        tabs: [],
-      },
-      snapshotTimestamp: new Date(),
-    });
+    // 6. Create ExportJob record
+    let job;
+    try {
+      job = await ExportJob.create({
+        jobId,
+        clientRequestId,
+        exportType,
+        categories,
+        requestedBy: req.user._id,
+        status: 'pending',
+        destination: {
+          spreadsheetId,
+          spreadsheetUrl: `https://docs.google.com/spreadsheets/d/${spreadsheetId}`,
+          tabs: [],
+        },
+        snapshotTimestamp: new Date(),
+      });
+    } catch (createErr) {
+      // Handle concurrent race condition for duplicate clientRequestId
+      if (createErr.code === 11000 && clientRequestId) {
+        const winningJob = await ExportJob.findOne({ clientRequestId });
+        if (winningJob) {
+          return res.status(200).json({
+            success: true,
+            message: 'Export job already initiated with this request ID',
+            jobId: winningJob.jobId,
+            status: winningJob.status,
+            destination: winningJob.destination,
+            isExisting: true,
+          });
+        }
+      }
+      throw createErr;
+    }
 
     // 6. Execution: synchronous (for fast verification/testing) or background
     if (runSync) {

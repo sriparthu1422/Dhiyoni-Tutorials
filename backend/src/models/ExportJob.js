@@ -30,6 +30,11 @@ const exportJobSchema = new mongoose.Schema(
       required: [true, 'Job ID is required'],
       trim: true,
     },
+    clientRequestId: {
+      type: String,
+      trim: true,
+      default: null,
+    },
     exportType: {
       type: String,
       enum: ['full', 'incremental', 'category'],
@@ -146,6 +151,7 @@ const exportJobSchema = new mongoose.Schema(
 
 // Indexes
 exportJobSchema.index({ jobId: 1 }, { unique: true });
+exportJobSchema.index({ clientRequestId: 1 }, { unique: true, sparse: true });
 exportJobSchema.index({ status: 1, createdAt: -1 });
 exportJobSchema.index({ requestedBy: 1, createdAt: -1 });
 exportJobSchema.index({ 'destination.spreadsheetId': 1, 'concurrencyLock.isLocked': 1 });

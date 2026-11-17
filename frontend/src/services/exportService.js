@@ -69,7 +69,7 @@ async function handleApiError(res, fallbackMessage) {
  * @param {boolean} [options.runSync=false] - Whether to run synchronously
  * @returns {Promise<{success: boolean, jobId: string, status: string, destination?: object, data?: object}>}
  */
-export async function initiateExport({ categories, spreadsheetId, runSync = false } = {}) {
+export async function initiateExport({ categories, spreadsheetId, runSync = false, idempotencyKey } = {}) {
   const payload = { runSync };
 
   if (categories && Array.isArray(categories) && categories.length > 0) {
@@ -80,11 +80,23 @@ export async function initiateExport({ categories, spreadsheetId, runSync = fals
     payload.spreadsheetId = spreadsheetId.trim();
   }
 
+  const reqHeaders = getAdminHeaders();
+  const activeIdempotencyKey =
+    idempotencyKey ||
+    (typeof crypto !== 'undefined' && crypto.randomUUID
+      ? crypto.randomUUID()
+      : `req_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`);
+
+  reqHeaders['Idempotency-Key'] = activeIdempotencyKey;
+  if (idempotencyKey) {
+    payload.clientRequestId = idempotencyKey;
+  }
+
   let res;
   try {
     res = await fetch('/api/export', {
       method: 'POST',
-      headers: getAdminHeaders(),
+      headers: reqHeaders,
       body: JSON.stringify(payload),
     });
   } catch (netErr) {

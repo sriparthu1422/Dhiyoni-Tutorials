@@ -7,11 +7,12 @@ import {
   deleteParentSignup,
 } from '../controllers/parentSignupController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
+import { formSubmissionRateLimiter } from '../middleware/rateLimitMiddleware.js';
 
 const router = express.Router();
 
 router.route('/')
-  .post(createParentSignup)
+  .post(formSubmissionRateLimiter, createParentSignup)
   .get(protect, admin, getParentSignups);
 
 router.route('/:id')

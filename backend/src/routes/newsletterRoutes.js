@@ -6,11 +6,12 @@ import {
   deleteNewsletter,
 } from '../controllers/newsletterController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
+import { formSubmissionRateLimiter } from '../middleware/rateLimitMiddleware.js';
 
 const router = express.Router();
 
 router.route('/')
-  .post(subscribeNewsletter)
+  .post(formSubmissionRateLimiter, subscribeNewsletter)
   .get(protect, admin, getNewsletters);
 
 router.route('/:id')

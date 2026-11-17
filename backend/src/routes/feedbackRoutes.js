@@ -6,11 +6,12 @@ import {
   deleteFeedback,
 } from '../controllers/feedbackController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
+import { formSubmissionRateLimiter } from '../middleware/rateLimitMiddleware.js';
 
 const router = express.Router();
 
 router.route('/')
-  .post(submitFeedback)
+  .post(formSubmissionRateLimiter, submitFeedback)
   .get(protect, admin, getFeedbacks);
 
 router.route('/:id')
